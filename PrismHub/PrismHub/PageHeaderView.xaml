@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d"
+             x:Class="ConfApp.PageHeaderView"
+             BackgroundColor="{DynamicResource NavHeaderBackgroundColor}"
+             >
+  <ContentView.Content>
+            <Grid RowSpacing="0" ColumnSpacing="0" Margin="10,0,10,0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Label
+              FontSize="30"
+              VerticalOptions="End"
+              Text="{Binding Title}"
+              FontAttributes="Bold"
+              Grid.Row="0"
+              Grid.Column="0"
+          />
+            <Image Aspect="AspectFit" HeightRequest="30" IsVisible="{Binding IsAvatarVisible}"
+                 WidthRequest="30"
+                 VerticalOptions="Start"
+                 HorizontalOptions="End"
+                 Source="Rob"
+                 Grid.Row="0"
+                 Grid.Column="1">
+                    <Image.GestureRecognizers>
+                        <TapGestureRecognizer
+                      Command="{Binding NavigateToProfileCommand}" />
+                    </Image.GestureRecognizers>
+                </Image>
+            </Grid>
+    </ContentView.Content>
+</ContentView>
