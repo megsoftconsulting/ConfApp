@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ConfApp.ViewModels;assembly=ConfApp"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:speakers="clr-namespace:ConfApp.Speakers;assembly=ConfApp"
+             xmlns:xaml="http://prismlibrary.com"
+             xmlns:ConfApp="clr-namespace:ConfApp;assembly=ConfApp"
+             xmlns:talks="clr-namespace:ConfApp.Talks;assembly=ConfApp"
+             xmlns:talks1="clr-namespace:ConfApp.Talks;assembly=ConfApp"
+             xmlns:confApp="clr-namespace:ConfApp;assembly=ConfApp"
+             x:Class="ConfApp.Talks.TalksPage"
+             x:DataType="talks1:TalksViewModel"
+             xaml:ViewModelLocator.AutowireViewModel="True"
+             ios:Page.UseSafeArea="True"
+             IconImageSource="SpeakersTabIcon_Enabled"
+             Title="{Binding Title}"
+             BackgroundColor="{DynamicResource LayoutColor}">
+    <NavigationPage.TitleView>
+        <StackLayout>
+            <confApp:PageHeaderView Title="{Binding Title}" IsAvatarVisible="True" />
+        </StackLayout>
+    </NavigationPage.TitleView>
+    <ContentPage.Content>
+        <StackLayout x:Name="Screen" Spacing="0" BackgroundColor="{DynamicResource LayoutColor}">
+            <StackLayout Orientation="Horizontal" Margin="16,0,16,0" IsVisible="True">
+                <Button HorizontalOptions="FillAndExpand"
+                        HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                        Text="Thursday" FontAttributes="Bold"
+                        TextColor="{DynamicResource BackgroundColor}"
+                        BackgroundColor="{DynamicResource PrimaryColor}" CornerRadius="15" />
+                <Button HorizontalOptions="FillAndExpand"
+                        HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                        Text="Friday" FontAttributes="Bold"
+                        TextColor="{DynamicResource SecondaryTextColor}"
+                        BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
+                <Button HorizontalOptions="FillAndExpand"
+                        HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                        Text="Saturday" FontAttributes="Bold"
+                        TextColor="{DynamicResource SecondaryTextColor}"
+                        BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
+            </StackLayout>
+            <StackLayout Margin="16,10,16,0">
+                <CollectionView
+                    SelectionMode="None"
+                    SelectionChangedCommand="{Binding SelectedItemCommand}"
+                    SelectedItem="{Binding SelectedItem}"
+                    ItemsSource="{Binding Items}"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="StartAndExpand">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.EmptyViewTemplate>
+                        <DataTemplate>
+                            <StackLayout VerticalOptions="FillAndExpand"
+                                         HorizontalOptions="FillAndExpand">
+                                <Label Text="Empty View"
+                                       VerticalOptions="CenterAndExpand"
+                                       HorizontalOptions="CenterAndExpand" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.EmptyViewTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="{DynamicResource BackgroundColor}"
+                                   VerticalOptions="FillAndExpand"
+                                   Margin="0,0,0,0"
+                                   Padding="11,8,11,0"
+                                   HasShadow="False"
+                                   CornerRadius="5">
+                                <Grid x:DataType="speakers:ItemViewModel"
+                                      RowSpacing="10"
+                                      ColumnSpacing="0"
+                                      Padding="0"
+                                      Margin="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="30" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="Solving Diabetes with an Open Source Artificial Pancreas"
+                                           FontSize="Medium"
+                                           FontAttributes="Bold"
+                                           Grid.Row="0"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="3" />
+
+                                    <StackLayout Orientation="Horizontal"
+                                                 Grid.Row="1"
+                                                 Grid.Column="0" Grid.ColumnSpan="3">
+                                        <Frame
+
+                                            HorizontalOptions="Start"
+                                            HasShadow="False"
+                                            CornerRadius="25"
+                                            HeightRequest="58"
+                                            WidthRequest="58"
+                                            IsClippedToBounds="True"
+                                            Padding="0">
+                                            <Image Aspect="AspectFit"
+                                                   Source="{Binding Image}" />
+                                        </Frame>
+                                        <StackLayout VerticalOptions="Center">
+                                            <Label Text="Grace Hansen"
+                                                   FontSize="Small"
+                                                   HorizontalOptions="StartAndExpand"
+                                                   TextColor="{DynamicResource  BodyTextColor}" />
+                                            <Label Text="Microsoft" FontSize="Small"
+                                                   TextColor="{DynamicResource  BodyTextColor}" />
+                                        </StackLayout>
+                                        <StackLayout
+                                            VerticalOptions="Center"
+                                            Orientation="Vertical">
+                                            <Label Text="Macao"
+                                                   FontSize="Small"
+                                                   TextColor="{DynamicResource  BodyTextColor}" />
+                                            <Label Text="11:00AM" FontSize="Small"
+                                                   TextColor="{DynamicResource  BodyTextColor}" />
+                                        </StackLayout>
+                                    </StackLayout>
+                                    <Frame
+                                        BackgroundColor="Transparent"
+                                        Padding="0,0,10,0" WidthRequest="30"
+                                        HasShadow="False"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="3"
+                                        Grid.Column="3">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding ItemSelectedCommand}" />
+                                        </Frame.GestureRecognizers>
+                                        <Image Source="RightArrow"
+
+                                               HorizontalOptions="End"
+                                               VerticalOptions="Center" />
+                                    </Frame>
+                                </Grid>
+
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

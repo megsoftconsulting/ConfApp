@@ -2,7 +2,7 @@
 using Prism.Mvvm;
 using Prism.Navigation;
 
-namespace PrismHub.ViewModels
+namespace ConfApp.ViewModels
 {
     public class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible, IPageLifecycleAware
     {

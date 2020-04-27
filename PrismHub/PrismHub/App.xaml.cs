@@ -1,13 +1,15 @@
-﻿using Prism;
+﻿using System.Text;
+using System.Threading.Tasks;
+using ConfApp.Loading;
+using ConfApp.Speakers;
+using ConfApp.Talks;
+using Prism;
 using Prism.Ioc;
-using PrismHub.ViewModels;
-using PrismHub.Views;
-using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 
-namespace PrismHub
+namespace ConfApp
 {
     public partial class App
     {
@@ -27,14 +29,31 @@ namespace PrismHub
         protected override async void OnInitialized()
         {
             InitializeComponent();
-
-            await NavigationService.NavigateAsync("NavigationPage/MainPage");
+            //await NavigateToTabbedPage();
+            await NavigationService.NavigateAsync("LoadingPage");
+           
         }
+
+        private async Task NavigateToTabbedPage()
+        {
+            var sb = new StringBuilder("/MainTabbedPage?");
+            sb.Append($"createTab={nameof(MyNavigationPage)}|{nameof(SpeakersPage)}");
+            sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(TalksPage)}");
+            sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(TalksPage)}");
+            sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(TalksPage)}");
+            await NavigationService.NavigateAsync(sb.ToString());
+        }
+
 
         protected override void RegisterTypes(IContainerRegistry containerRegistry)
         {
-            containerRegistry.RegisterForNavigation<NavigationPage>();
-            containerRegistry.RegisterForNavigation<MainPage, MainPageViewModel>();
+            containerRegistry.RegisterForNavigation<MyNavigationPage>();
+            containerRegistry.RegisterForNavigation<MainTabbedPage>();
+            containerRegistry.RegisterForNavigation<SpeakersPage, SpeakersViewModel>();
+            containerRegistry.RegisterForNavigation<TalksPage, TalksViewModel>();
+            containerRegistry.RegisterForNavigation<TalkDetailPage, TalkDetailViewModel>();
+            containerRegistry.RegisterForNavigation<LoadingPage, LoadingViewModel>();
+            containerRegistry.RegisterForNavigation<SpeakerDetailPage, SpeakerDetailViewModel>();
         }
     }
 }

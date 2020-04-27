@@ -1,34 +1,30 @@
 ﻿using System;
 using Foundation;
+using MetalPerformanceShaders;
 using UIKit;
 
-namespace PrismHub.iOS
+namespace ConfApp.iOS
 {
-    public class FinishedLaunchingDelegate
+    public static class FinishedLaunchingDelegate
     {
-        private WeakReference<UIApplicationDelegate> _appDelegate;
-
-        public FinishedLaunchingDelegate(UIApplicationDelegate appDelegate)
+        private static AppDelegate _app;
+        public static void SetApp(AppDelegate app)
         {
-            _appDelegate = new WeakReference<UIApplicationDelegate>(appDelegate);
+            _app = app;
         }
-
-        public FinishedLaunchingDelegate ConfigureUnhandledErrorHandling(UIApplication app, NSDictionary options)
+        public static void ConfigureUnhandledErrorHandling(UIApplication app, NSDictionary options)
         {
             // Here is where you would setup the CrashReporting and Global Unhandled Error Handling. 
-            return this;
         }
 
-        public FinishedLaunchingDelegate InitializeBeforeXamarinForms(UIApplication app, NSDictionary options)
+        public static void InitializeBeforeXamarinForms(UIApplication app, NSDictionary options)
         {
             // Initialize and start anything needed to happen before Xamarin Forms is Initialized.
-            return this;
         }
 
-        public FinishedLaunchingDelegate InitializeControls(UIApplication app, NSDictionary options)
+        public static void InitializeControls(UIApplication app, NSDictionary options)
         {
             // Initialize controls and libraries (e.g.: Xamarin Essentials, Shiny, etc).
-            return this;
         }
     }
 }

@@ -1,0 +1,112 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ConfApp.ViewModels;assembly=ConfApp"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:speakers="clr-namespace:ConfApp.Speakers;assembly=ConfApp"
+             xmlns:xaml="http://prismlibrary.com"
+             xmlns:ConfApp="clr-namespace:ConfApp;assembly=ConfApp"
+             x:Class="ConfApp.Speakers.SpeakersPage"
+             x:DataType="speakers:SpeakersViewModel"
+             xaml:ViewModelLocator.AutowireViewModel="True"
+             IconImageSource="SpeakersTabIcon_Enabled"
+             Title="{Binding Title}"
+             ios:Page.LargeTitleDisplay="Always"
+             ios:Page.UseSafeArea="True"
+             NavigationPage.HasNavigationBar="False"
+             BackgroundColor="{DynamicResource LayoutColor}">
+    <NavigationPage.TitleView>
+        <StackLayout>
+            <ConfApp:PageHeaderView Title="{Binding Title}" IsAvatarVisible="False" />
+        </StackLayout>
+    </NavigationPage.TitleView> 
+    <ContentPage.Content>
+        <StackLayout x:Name="Screen" Spacing="0" BackgroundColor="{DynamicResource LayoutColor}">
+            <StackLayout>
+                <ConfApp:PageHeaderView Title="{Binding Title}" Margin="0,20,0,20" IsAvatarVisible="False" />
+            </StackLayout>
+            <StackLayout Margin="16,0,16,0" Padding="0,0,0,0">
+                <CollectionView
+                    SelectionMode="None"
+                    SelectionChangedCommand="{Binding SelectedItemCommand}"
+                    SelectedItem="{Binding SelectedItem}"
+                    ItemsSource="{Binding Items}"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="StartAndExpand">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.EmptyViewTemplate>
+                        <DataTemplate>
+                            <Label Text="Empty View" />
+                        </DataTemplate>
+                    </CollectionView.EmptyViewTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="{DynamicResource BackgroundColor}"
+                                   HasShadow="False"
+                                   Margin="0,0,0,0"
+                                   Padding="11,8,11,8"
+                                   CornerRadius="5">
+                                <Grid x:DataType="speakers:ItemViewModel"
+                                      RowSpacing="2" Padding="0" Margin="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Frame Grid.RowSpan="3"
+                                           Grid.Column="0"
+                                           HasShadow="False"
+                                           CornerRadius="25"
+                                           HeightRequest="58"
+                                           WidthRequest="58"
+                                           IsClippedToBounds="True"
+                                           HorizontalOptions="Center"
+                                           Padding="0">
+                                        <Image Aspect="AspectFit"
+                                               Source="{Binding Image}" />
+                                    </Frame>
+
+                                    <Label Text="{Binding Name}" FontSize="Large" FontAttributes="Bold"
+                                           Grid.Column="1"
+                                           Grid.Row="0" />
+                                    <Label Text="{Binding Description}" FontSize="Small" Grid.Column="1"
+                                           Grid.Row="1" />
+                                    <Label Text="{Binding Company}" FontSize="Small"
+                                           TextColor="{DynamicResource SecondaryTextColor}" Grid.Column="1"
+                                           Grid.Row="2" />
+
+                                    <Frame
+                                        BackgroundColor="Transparent"
+                                        Padding="0,0,10,0" WidthRequest="30"
+                                        HasShadow="False"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="3"
+                                        Grid.Column="2">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding ItemSelectedCommand}" />
+                                        </Frame.GestureRecognizers>
+                                        <Image Source="RightArrow"
+
+                                               HorizontalOptions="End"
+                                               VerticalOptions="Center" />
+                                    </Frame>
+                                </Grid>
+
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

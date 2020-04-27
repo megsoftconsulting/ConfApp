@@ -2,7 +2,7 @@
 using Prism;
 using Prism.Ioc;
 
-namespace PrismHub.iOS
+namespace ConfApp.iOS
 {
     [SuppressMessage("ReSharper", "InconsistentNaming")]
     public class iOSInitializer : IPlatformInitializer
