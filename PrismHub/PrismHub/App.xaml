@@ -7,6 +7,7 @@
                         x:Class="ConfApp.App">
     <Application.Resources>
         <!-- COLORS -->
+        <Color x:Key="PageContentBackgroundColor">#A0F7F7F7</Color>
         <Color x:Key="BackgroundColor">#FFFFFFFF</Color>
         <Color x:Key="BodyTextColor">#FF787D83</Color>
         <Color x:Key="LayoutColor">#FFF7F7F7</Color>

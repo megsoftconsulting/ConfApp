@@ -16,23 +16,4 @@
             iOsSpecific:Page.UseSafeArea="True"
             NavigationPage.HasNavigationBar="True"
             x:Class="ConfApp.MainTabbedPage">
-    <!--<TabbedPage.Children>
-        <ConfApp:MyNavigationPage 
-            IconImageSource="SpeakersTabIcon_Enabled" 
-            Title="Speakers">
-            <x:Arguments>
-                <speakers:SpeakersPage/>
-            </x:Arguments>
-        </ConfApp:MyNavigationPage>
-        <ConfApp:MyNavigationPage 
-            IconImageSource="TalksTabIcon_Disabled" 
-            Title="Talks">
-            <x:Arguments>
-                <talks:TalksPage/>
-            </x:Arguments>
-        </ConfApp:MyNavigationPage>
-      
-        <ContentPage Title="Schedule" IconImageSource="ScheduleTabIcon_Disabled"/>
-        <ContentPage Title="About" IconImageSource="AboutTabIcon_Disabled"/>
-    </TabbedPage.Children>-->
 </TabbedPage>

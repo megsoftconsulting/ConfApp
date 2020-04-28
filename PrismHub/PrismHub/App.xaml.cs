@@ -1,10 +1,12 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
+using ConfApp.About;
 using ConfApp.Loading;
 using ConfApp.Speakers;
 using ConfApp.Talks;
 using Prism;
 using Prism.Ioc;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
@@ -29,9 +31,8 @@ namespace ConfApp
         protected override async void OnInitialized()
         {
             InitializeComponent();
-            //await NavigateToTabbedPage();
-            await NavigationService.NavigateAsync("LoadingPage");
-           
+            await NavigateToTabbedPage();
+            //await NavigationService.NavigateAsync("/LoadingPage");
         }
 
         private async Task NavigateToTabbedPage()
@@ -39,8 +40,8 @@ namespace ConfApp
             var sb = new StringBuilder("/MainTabbedPage?");
             sb.Append($"createTab={nameof(MyNavigationPage)}|{nameof(SpeakersPage)}");
             sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(TalksPage)}");
-            sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(TalksPage)}");
-            sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(TalksPage)}");
+            sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(AboutPage)}");
+            //sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(TalksPage)}");
             await NavigationService.NavigateAsync(sb.ToString());
         }
 
@@ -54,6 +55,9 @@ namespace ConfApp
             containerRegistry.RegisterForNavigation<TalkDetailPage, TalkDetailViewModel>();
             containerRegistry.RegisterForNavigation<LoadingPage, LoadingViewModel>();
             containerRegistry.RegisterForNavigation<SpeakerDetailPage, SpeakerDetailViewModel>();
+            containerRegistry.RegisterForNavigation<AboutPage, AboutViewModel>();
+
+
         }
     }
 }

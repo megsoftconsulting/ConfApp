@@ -18,7 +18,7 @@
                 </Grid.ColumnDefinitions>
                 <Label
               FontSize="30"
-              VerticalOptions="End"
+              VerticalOptions="End" IsVisible="False"
               Text="{Binding Title}"
               FontAttributes="Bold"
               Grid.Row="0"
@@ -33,7 +33,7 @@
                  Grid.Column="1">
                     <Image.GestureRecognizers>
                         <TapGestureRecognizer
-                      Command="{Binding NavigateToProfileCommand}" />
+                      Command="{Binding Command}" />
                     </Image.GestureRecognizers>
                 </Image>
             </Grid>

@@ -47,11 +47,12 @@ namespace ConfApp.Loading
         {
             const string navigationPage = "MyNavigationPage";
             const string tabbedPage = "MainTabbedPage";
+            
             var sb = new StringBuilder($"/{tabbedPage}?");
-            sb.Append($"createTab={navigationPage}|SpeakersPage");
-            sb.Append($"&createTab={navigationPage}|TalksPage");
-            //sb.Append($"&createTab={navigationPage}|TalksPage");
-            //sb.Append($"&createTab={navigationPage}|TalksPage");
+
+            sb.Append($"createTab={navigationPage}|TalksPage");
+           // sb.Append($"&createTab={navigationPage}|TalksPage");
+            sb.Append($"&createTab={navigationPage}|AboutPage");
             await NavigationService.NavigateAsync(sb.ToString());
         }
 

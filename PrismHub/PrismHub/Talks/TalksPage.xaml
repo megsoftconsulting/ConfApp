@@ -6,22 +6,14 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:speakers="clr-namespace:ConfApp.Speakers;assembly=ConfApp"
              xmlns:xaml="http://prismlibrary.com"
-             xmlns:ConfApp="clr-namespace:ConfApp;assembly=ConfApp"
              xmlns:talks="clr-namespace:ConfApp.Talks;assembly=ConfApp"
-             xmlns:talks1="clr-namespace:ConfApp.Talks;assembly=ConfApp"
-             xmlns:confApp="clr-namespace:ConfApp;assembly=ConfApp"
              x:Class="ConfApp.Talks.TalksPage"
-             x:DataType="talks1:TalksViewModel"
+             x:DataType="talks:TalksViewModel"
              xaml:ViewModelLocator.AutowireViewModel="True"
              ios:Page.UseSafeArea="True"
              IconImageSource="SpeakersTabIcon_Enabled"
              Title="{Binding Title}"
              BackgroundColor="{DynamicResource LayoutColor}">
-    <NavigationPage.TitleView>
-        <StackLayout>
-            <confApp:PageHeaderView Title="{Binding Title}" IsAvatarVisible="True" />
-        </StackLayout>
-    </NavigationPage.TitleView>
     <ContentPage.Content>
         <StackLayout x:Name="Screen" Spacing="0" BackgroundColor="{DynamicResource LayoutColor}">
             <StackLayout Orientation="Horizontal" Margin="16,0,16,0" IsVisible="True">
@@ -63,14 +55,14 @@
                         </DataTemplate>
                     </CollectionView.EmptyViewTemplate>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="talks:TalkModel">
                             <Frame BackgroundColor="{DynamicResource BackgroundColor}"
                                    VerticalOptions="FillAndExpand"
                                    Margin="0,0,0,0"
                                    Padding="11,8,11,0"
                                    HasShadow="False"
                                    CornerRadius="5">
-                                <Grid x:DataType="speakers:ItemViewModel"
+                                <Grid 
                                       RowSpacing="10"
                                       ColumnSpacing="0"
                                       Padding="0"
@@ -86,7 +78,7 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="30" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="Solving Diabetes with an Open Source Artificial Pancreas"
+                                    <Label Text="{Binding Title}"
                                            FontSize="Medium"
                                            FontAttributes="Bold"
                                            Grid.Row="0"
@@ -106,23 +98,23 @@
                                             IsClippedToBounds="True"
                                             Padding="0">
                                             <Image Aspect="AspectFit"
-                                                   Source="{Binding Image}" />
+                                                   Source="{Binding AvatarImage}" />
                                         </Frame>
                                         <StackLayout VerticalOptions="Center">
-                                            <Label Text="Grace Hansen"
+                                            <Label Text="{Binding SpeakerName}"
                                                    FontSize="Small"
                                                    HorizontalOptions="StartAndExpand"
                                                    TextColor="{DynamicResource  BodyTextColor}" />
-                                            <Label Text="Microsoft" FontSize="Small"
+                                            <Label Text="{Binding Employer}" FontSize="Small"
                                                    TextColor="{DynamicResource  BodyTextColor}" />
                                         </StackLayout>
                                         <StackLayout
                                             VerticalOptions="Center"
                                             Orientation="Vertical">
-                                            <Label Text="Macao"
+                                            <Label Text="{Binding Where}"
                                                    FontSize="Small"
                                                    TextColor="{DynamicResource  BodyTextColor}" />
-                                            <Label Text="11:00AM" FontSize="Small"
+                                            <Label Text="{Binding When}" FontSize="Small"
                                                    TextColor="{DynamicResource  BodyTextColor}" />
                                         </StackLayout>
                                     </StackLayout>
@@ -135,7 +127,10 @@
                                         Grid.Column="3">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer
-                                                Command="{Binding ItemSelectedCommand}" />
+                                                Command="{Binding 
+                                                Source={RelativeSource 
+                                                AncestorType={x:Type talks:TalksViewModel}},
+                                                Path=SelectedItemCommand}" />
                                         </Frame.GestureRecognizers>
                                         <Image Source="RightArrow"
 

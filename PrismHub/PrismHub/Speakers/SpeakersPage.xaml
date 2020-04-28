@@ -2,32 +2,23 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:ConfApp.ViewModels;assembly=ConfApp"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:speakers="clr-namespace:ConfApp.Speakers;assembly=ConfApp"
              xmlns:xaml="http://prismlibrary.com"
-             xmlns:ConfApp="clr-namespace:ConfApp;assembly=ConfApp"
+             xmlns:confApp="clr-namespace:ConfApp;assembly=ConfApp"
              x:Class="ConfApp.Speakers.SpeakersPage"
              x:DataType="speakers:SpeakersViewModel"
              xaml:ViewModelLocator.AutowireViewModel="True"
              IconImageSource="SpeakersTabIcon_Enabled"
              Title="{Binding Title}"
-             ios:Page.LargeTitleDisplay="Always"
              ios:Page.UseSafeArea="True"
-             NavigationPage.HasNavigationBar="False"
-             BackgroundColor="{DynamicResource LayoutColor}">
-    <NavigationPage.TitleView>
-        <StackLayout>
-            <ConfApp:PageHeaderView Title="{Binding Title}" IsAvatarVisible="False" />
-        </StackLayout>
-    </NavigationPage.TitleView> 
+             ios:Page.LargeTitleDisplay="Automatic">
     <ContentPage.Content>
         <StackLayout x:Name="Screen" Spacing="0" BackgroundColor="{DynamicResource LayoutColor}">
-            <StackLayout>
-                <ConfApp:PageHeaderView Title="{Binding Title}" Margin="0,20,0,20" IsAvatarVisible="False" />
-            </StackLayout>
             <StackLayout Margin="16,0,16,0" Padding="0,0,0,0">
                 <CollectionView
+                    VerticalScrollBarVisibility="Never"
+                    ItemsUpdatingScrollMode="KeepLastItemInView"
                     SelectionMode="None"
                     SelectionChangedCommand="{Binding SelectedItemCommand}"
                     SelectedItem="{Binding SelectedItem}"
