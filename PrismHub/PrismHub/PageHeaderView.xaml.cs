@@ -1,4 +1,6 @@
-﻿using Xamarin.Forms;
+﻿using System.Windows.Input;
+using Prism.Commands;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 namespace ConfApp
@@ -9,14 +11,22 @@ namespace ConfApp
         public static readonly BindableProperty TitleProperty = BindableProperty.Create("Title",
             typeof(string),
             typeof(PageHeaderView),
-            "[Title]",
+            "",
             BindingMode.TwoWay);
 
-        public static readonly BindableProperty IsAvatarVisibleProperty = BindableProperty.Create(nameof(IsAvatarVisible),
+        public static readonly BindableProperty IsAvatarVisibleProperty = BindableProperty.Create(
+            "IsAvatarVisible",
             typeof(bool),
             typeof(PageHeaderView),
             false,
             BindingMode.TwoWay);
+
+        public static readonly BindableProperty CommandProperty = BindableProperty.Create("Command",
+            typeof(ICommand),
+            typeof(PageHeaderView),
+            new DelegateCommand(() => { }),
+            BindingMode.TwoWay);
+
 
         public PageHeaderView()
         {
@@ -28,6 +38,13 @@ namespace ConfApp
             get =>
                 (bool) GetValue(IsAvatarVisibleProperty);
             set => SetValue(IsAvatarVisibleProperty, value);
+        }
+
+        public ICommand Command
+        {
+            get =>
+                (ICommand) GetValue(CommandProperty);
+            set => SetValue(CommandProperty, value);
         }
 
         public string Title

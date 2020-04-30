@@ -1,11 +1,15 @@
-﻿using Prism.AppModel;
+﻿using System;
+using Prism;
+using Prism.AppModel;
 using Prism.Mvvm;
 using Prism.Navigation;
 
 namespace ConfApp.ViewModels
 {
-    public class ViewModelBase : BindableBase, IInitialize, INavigationAware, IDestructible, IPageLifecycleAware
+    public class ViewModelBase : BindableBase, INavigationAware, IDestructible, IPageLifecycleAware, IActiveAware
     {
+        private string _helloWorld;
+        private bool _isActive;
         private string _title;
 
         public ViewModelBase(INavigationService navigationService)
@@ -21,11 +25,15 @@ namespace ConfApp.ViewModels
             set => SetProperty(ref _title, value);
         }
 
-        public virtual void Destroy()
+        public bool IsActive
         {
+            get => _isActive;
+            set => SetProperty(ref _isActive, value, OnChanged);
         }
 
-        public virtual void Initialize(INavigationParameters parameters)
+        public event EventHandler IsActiveChanged;
+
+        public virtual void Destroy()
         {
         }
 
@@ -43,6 +51,11 @@ namespace ConfApp.ViewModels
 
         public virtual void OnDisappearing()
         {
+        }
+
+        private void OnChanged()
+        {
+            IsActiveChanged?.Invoke(this, EventArgs.Empty);
         }
     }
 }

@@ -6,46 +6,30 @@
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:speakers="clr-namespace:ConfApp.Speakers;assembly=ConfApp"
              xmlns:xaml="http://prismlibrary.com"
-             xmlns:ConfApp="clr-namespace:ConfApp;assembly=ConfApp"
              xmlns:talks="clr-namespace:ConfApp.Talks;assembly=ConfApp"
-             xmlns:talks1="clr-namespace:ConfApp.Talks;assembly=ConfApp"
              xmlns:confApp="clr-namespace:ConfApp;assembly=ConfApp"
              x:Class="ConfApp.Talks.TalksPage"
-             x:DataType="talks1:TalksViewModel"
-             xaml:ViewModelLocator.AutowireViewModel="True"
+             x:DataType="talks:TalksViewModel"
              ios:Page.UseSafeArea="True"
              IconImageSource="SpeakersTabIcon_Enabled"
+             ios:Page.LargeTitleDisplay="Always"
              Title="{Binding Title}"
              BackgroundColor="{DynamicResource LayoutColor}">
-    <NavigationPage.TitleView>
-        <StackLayout>
-            <confApp:PageHeaderView Title="{Binding Title}" IsAvatarVisible="True" />
-        </StackLayout>
-    </NavigationPage.TitleView>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Something"
+                     IconImageSource="BigArrow"
+                     
+                     Order="Primary"
+                     Priority="0" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout x:Name="Screen" Spacing="0" BackgroundColor="{DynamicResource LayoutColor}">
-            <StackLayout Orientation="Horizontal" Margin="16,0,16,0" IsVisible="True">
-                <Button HorizontalOptions="FillAndExpand"
-                        HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
-                        Text="Thursday" FontAttributes="Bold"
-                        TextColor="{DynamicResource BackgroundColor}"
-                        BackgroundColor="{DynamicResource PrimaryColor}" CornerRadius="15" />
-                <Button HorizontalOptions="FillAndExpand"
-                        HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
-                        Text="Friday" FontAttributes="Bold"
-                        TextColor="{DynamicResource SecondaryTextColor}"
-                        BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
-                <Button HorizontalOptions="FillAndExpand"
-                        HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
-                        Text="Saturday" FontAttributes="Bold"
-                        TextColor="{DynamicResource SecondaryTextColor}"
-                        BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
-            </StackLayout>
-            <StackLayout Margin="16,10,16,0">
+        <StackLayout x:Name="Screen" Spacing="0"
+                     BackgroundColor="{DynamicResource LayoutColor}">
+            <StackLayout Margin="16,0,16,0">
                 <CollectionView
+                    VerticalScrollBarVisibility="Never"
                     SelectionMode="None"
                     SelectionChangedCommand="{Binding SelectedItemCommand}"
-                    SelectedItem="{Binding SelectedItem}"
                     ItemsSource="{Binding Items}"
                     VerticalOptions="FillAndExpand"
                     HorizontalOptions="StartAndExpand">
@@ -62,19 +46,38 @@
                             </StackLayout>
                         </DataTemplate>
                     </CollectionView.EmptyViewTemplate>
+                    <CollectionView.Header>
+                        <StackLayout Orientation="Horizontal" Padding="0,0,0,10" IsVisible="True">
+                            <Button HorizontalOptions="FillAndExpand"
+                                    HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                                    Text="Thursday" FontAttributes="Bold"
+                                    TextColor="{DynamicResource BackgroundColor}"
+                                    BackgroundColor="{DynamicResource PrimaryColor}" CornerRadius="15" />
+                            <Button HorizontalOptions="FillAndExpand"
+                                    HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                                    Text="Friday" FontAttributes="Bold"
+                                    TextColor="{DynamicResource SecondaryTextColor}"
+                                    BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
+                            <Button HorizontalOptions="FillAndExpand"
+                                    HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                                    Text="Saturday" FontAttributes="Bold"
+                                    TextColor="{DynamicResource SecondaryTextColor}"
+                                    BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
+                        </StackLayout>
+                    </CollectionView.Header>
                     <CollectionView.ItemTemplate>
-                        <DataTemplate>
+                        <DataTemplate x:DataType="talks:TalkModel">
                             <Frame BackgroundColor="{DynamicResource BackgroundColor}"
                                    VerticalOptions="FillAndExpand"
                                    Margin="0,0,0,0"
                                    Padding="11,8,11,0"
                                    HasShadow="False"
                                    CornerRadius="5">
-                                <Grid x:DataType="speakers:ItemViewModel"
-                                      RowSpacing="10"
-                                      ColumnSpacing="0"
-                                      Padding="0"
-                                      Margin="0">
+                                <Grid
+                                    RowSpacing="10"
+                                    ColumnSpacing="0"
+                                    Padding="0"
+                                    Margin="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -86,7 +89,7 @@
                                         <ColumnDefinition Width="*" />
                                         <ColumnDefinition Width="30" />
                                     </Grid.ColumnDefinitions>
-                                    <Label Text="Solving Diabetes with an Open Source Artificial Pancreas"
+                                    <Label Text="{Binding Title}"
                                            FontSize="Medium"
                                            FontAttributes="Bold"
                                            Grid.Row="0"
@@ -106,23 +109,23 @@
                                             IsClippedToBounds="True"
                                             Padding="0">
                                             <Image Aspect="AspectFit"
-                                                   Source="{Binding Image}" />
+                                                   Source="{Binding AvatarImage}" />
                                         </Frame>
                                         <StackLayout VerticalOptions="Center">
-                                            <Label Text="Grace Hansen"
+                                            <Label Text="{Binding SpeakerName}"
                                                    FontSize="Small"
                                                    HorizontalOptions="StartAndExpand"
                                                    TextColor="{DynamicResource  BodyTextColor}" />
-                                            <Label Text="Microsoft" FontSize="Small"
+                                            <Label Text="{Binding Employer}" FontSize="Small"
                                                    TextColor="{DynamicResource  BodyTextColor}" />
                                         </StackLayout>
                                         <StackLayout
                                             VerticalOptions="Center"
                                             Orientation="Vertical">
-                                            <Label Text="Macao"
+                                            <Label Text="{Binding Where}"
                                                    FontSize="Small"
                                                    TextColor="{DynamicResource  BodyTextColor}" />
-                                            <Label Text="11:00AM" FontSize="Small"
+                                            <Label Text="{Binding When}" FontSize="Small"
                                                    TextColor="{DynamicResource  BodyTextColor}" />
                                         </StackLayout>
                                     </StackLayout>
@@ -135,7 +138,13 @@
                                         Grid.Column="3">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer
-                                                Command="{Binding ItemSelectedCommand}" />
+                                                Command="{Binding 
+                                                Source={RelativeSource 
+                                                AncestorType={x:Type talks:TalksViewModel}},
+                                                Path=SelectedItemCommand}"
+                                                CommandParameter="{Binding 
+                                                Source={RelativeSource
+                                                AncestorType={x:Type talks:TalkModel}}}" />
                                         </Frame.GestureRecognizers>
                                         <Image Source="RightArrow"
 
