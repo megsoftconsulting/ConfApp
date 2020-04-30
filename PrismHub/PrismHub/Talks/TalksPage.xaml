@@ -7,37 +7,29 @@
              xmlns:speakers="clr-namespace:ConfApp.Speakers;assembly=ConfApp"
              xmlns:xaml="http://prismlibrary.com"
              xmlns:talks="clr-namespace:ConfApp.Talks;assembly=ConfApp"
+             xmlns:confApp="clr-namespace:ConfApp;assembly=ConfApp"
              x:Class="ConfApp.Talks.TalksPage"
              x:DataType="talks:TalksViewModel"
-             xaml:ViewModelLocator.AutowireViewModel="True"
              ios:Page.UseSafeArea="True"
              IconImageSource="SpeakersTabIcon_Enabled"
+             ios:Page.LargeTitleDisplay="Always"
              Title="{Binding Title}"
              BackgroundColor="{DynamicResource LayoutColor}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Something"
+                     IconImageSource="BigArrow"
+                     
+                     Order="Primary"
+                     Priority="0" />
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        <StackLayout x:Name="Screen" Spacing="0" BackgroundColor="{DynamicResource LayoutColor}">
-            <StackLayout Orientation="Horizontal" Margin="16,0,16,0" IsVisible="True">
-                <Button HorizontalOptions="FillAndExpand"
-                        HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
-                        Text="Thursday" FontAttributes="Bold"
-                        TextColor="{DynamicResource BackgroundColor}"
-                        BackgroundColor="{DynamicResource PrimaryColor}" CornerRadius="15" />
-                <Button HorizontalOptions="FillAndExpand"
-                        HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
-                        Text="Friday" FontAttributes="Bold"
-                        TextColor="{DynamicResource SecondaryTextColor}"
-                        BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
-                <Button HorizontalOptions="FillAndExpand"
-                        HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
-                        Text="Saturday" FontAttributes="Bold"
-                        TextColor="{DynamicResource SecondaryTextColor}"
-                        BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
-            </StackLayout>
-            <StackLayout Margin="16,10,16,0">
+        <StackLayout x:Name="Screen" Spacing="0"
+                     BackgroundColor="{DynamicResource LayoutColor}">
+            <StackLayout Margin="16,0,16,0">
                 <CollectionView
+                    VerticalScrollBarVisibility="Never"
                     SelectionMode="None"
                     SelectionChangedCommand="{Binding SelectedItemCommand}"
-                    SelectedItem="{Binding SelectedItem}"
                     ItemsSource="{Binding Items}"
                     VerticalOptions="FillAndExpand"
                     HorizontalOptions="StartAndExpand">
@@ -54,6 +46,25 @@
                             </StackLayout>
                         </DataTemplate>
                     </CollectionView.EmptyViewTemplate>
+                    <CollectionView.Header>
+                        <StackLayout Orientation="Horizontal" Padding="0,0,0,10" IsVisible="True">
+                            <Button HorizontalOptions="FillAndExpand"
+                                    HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                                    Text="Thursday" FontAttributes="Bold"
+                                    TextColor="{DynamicResource BackgroundColor}"
+                                    BackgroundColor="{DynamicResource PrimaryColor}" CornerRadius="15" />
+                            <Button HorizontalOptions="FillAndExpand"
+                                    HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                                    Text="Friday" FontAttributes="Bold"
+                                    TextColor="{DynamicResource SecondaryTextColor}"
+                                    BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
+                            <Button HorizontalOptions="FillAndExpand"
+                                    HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                                    Text="Saturday" FontAttributes="Bold"
+                                    TextColor="{DynamicResource SecondaryTextColor}"
+                                    BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
+                        </StackLayout>
+                    </CollectionView.Header>
                     <CollectionView.ItemTemplate>
                         <DataTemplate x:DataType="talks:TalkModel">
                             <Frame BackgroundColor="{DynamicResource BackgroundColor}"
@@ -62,11 +73,11 @@
                                    Padding="11,8,11,0"
                                    HasShadow="False"
                                    CornerRadius="5">
-                                <Grid 
-                                      RowSpacing="10"
-                                      ColumnSpacing="0"
-                                      Padding="0"
-                                      Margin="0">
+                                <Grid
+                                    RowSpacing="10"
+                                    ColumnSpacing="0"
+                                    Padding="0"
+                                    Margin="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -130,7 +141,10 @@
                                                 Command="{Binding 
                                                 Source={RelativeSource 
                                                 AncestorType={x:Type talks:TalksViewModel}},
-                                                Path=SelectedItemCommand}" />
+                                                Path=SelectedItemCommand}"
+                                                CommandParameter="{Binding 
+                                                Source={RelativeSource
+                                                AncestorType={x:Type talks:TalkModel}}}" />
                                         </Frame.GestureRecognizers>
                                         <Image Source="RightArrow"
 

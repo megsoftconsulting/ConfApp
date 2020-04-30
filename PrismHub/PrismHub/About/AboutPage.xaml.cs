@@ -6,7 +6,6 @@ namespace ConfApp.About
     {
         public AboutPage()
         {
-            Title = "About";
             InitializeComponent();
         }
     }

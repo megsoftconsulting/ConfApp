@@ -1,12 +1,11 @@
 ﻿using System.Collections.ObjectModel;
-using ConfApp.Speakers;
 using ConfApp.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
 
 namespace ConfApp.Talks
 {
-    public class TalksViewModel : ViewModelBase
+    public class TalksViewModel : ViewModelBase, IInitialize
     {
         private ObservableCollection<TalkModel> _items = new ObservableCollection<TalkModel>();
 
@@ -14,7 +13,7 @@ namespace ConfApp.Talks
             : base(navigationService)
         {
             Title = "Talks";
-            AddMockData();
+            //SelectedItemCommand = new DelegateCommand<TalkModel>(OnSelectedItem);
         }
 
         public DelegateCommand<TalkModel> SelectedItemCommand { get; set; }
@@ -26,7 +25,11 @@ namespace ConfApp.Talks
             set => SetProperty(ref _items, value);
         }
 
-        public ItemViewModel SelectedItem { get; set; }
+        public void Initialize(INavigationParameters parameters)
+        {
+            AddMockData();
+        }
+
 
         private void AddMockData()
         {

@@ -1,22 +1,28 @@
-﻿using ConfApp.ViewModels;
-using Prism.Commands;
-using Prism.Navigation;
+﻿using Prism.Mvvm;
 
 namespace ConfApp.Speakers
 {
-    public class ItemViewModel : ViewModelBase
+    public class SpeakerModel : BindableBase
     {
+        private string _bigImage;
         private string _company;
         private string _description;
         private string _firstname;
         private string _image;
-
         private string _lastName;
-        private string _name;
 
-        public ItemViewModel(INavigationService navigationService) : base(navigationService)
+        public SpeakerModel()
         {
-            ItemSelectedCommand = new DelegateCommand(OnItemSelected);
+        }
+
+        public SpeakerModel(string firstName, string lastName, string description, string image, string company)
+        {
+            FirstName = firstName;
+            LastName = lastName;
+            Company = company;
+            Description = description;
+            Image = image;
+            BigImage = "Big" + Image;
         }
 
         public string Company
@@ -30,8 +36,6 @@ namespace ConfApp.Speakers
             get => _image;
             set => SetProperty(ref _image, value);
         }
-
-        public DelegateCommand ItemSelectedCommand { get; set; }
 
         public string Description
         {
@@ -61,14 +65,10 @@ namespace ConfApp.Speakers
 
         public string Name => _firstname + " " + _lastName;
 
-        private async void OnItemSelected()
+        public string BigImage
         {
-            var p = new NavigationParameters
-            {
-                {nameof(Name), Name},
-                {nameof(Description), Description}
-            };
-           await NavigationService.NavigateAsync("SpeakerDetailPage", p, false, false);
+            get => _bigImage;
+            set => SetProperty(ref _bigImage, value);
         }
     }
 }

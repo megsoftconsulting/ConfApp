@@ -18,13 +18,13 @@
                 </Grid.ColumnDefinitions>
                 <Label
               FontSize="30"
-              VerticalOptions="End" IsVisible="False"
-              Text="{Binding Title}"
+              VerticalOptions="End" IsVisible="True"
+             
               FontAttributes="Bold"
               Grid.Row="0"
               Grid.Column="0"
           />
-            <Image Aspect="AspectFit" HeightRequest="30" IsVisible="{Binding IsAvatarVisible}"
+            <Image Aspect="AspectFit" HeightRequest="30"
                  WidthRequest="30"
                  VerticalOptions="Start"
                  HorizontalOptions="End"

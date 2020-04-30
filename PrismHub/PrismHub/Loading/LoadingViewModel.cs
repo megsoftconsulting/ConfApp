@@ -1,5 +1,8 @@
 ﻿using System.Text;
 using System.Threading.Tasks;
+using ConfApp.About;
+using ConfApp.Speakers;
+using ConfApp.Talks;
 using ConfApp.ViewModels;
 using Prism.Navigation;
 
@@ -38,21 +41,16 @@ namespace ConfApp.Loading
             LoadingInProgress = true;
             await UpdateProgress();
             LoadingInProgress = false;
-            //var uri = new Uri("/MainTabbedPage/SpeakersPage", UriKind.Absolute);
-            //await NavigationService.NavigateAsync(uri);
             await NavigateToTabbedPage();
         }
 
         private async Task NavigateToTabbedPage()
         {
-            const string navigationPage = "MyNavigationPage";
-            const string tabbedPage = "MainTabbedPage";
-            
-            var sb = new StringBuilder($"/{tabbedPage}?");
-
-            sb.Append($"createTab={navigationPage}|TalksPage");
-           // sb.Append($"&createTab={navigationPage}|TalksPage");
-            sb.Append($"&createTab={navigationPage}|AboutPage");
+            var sb = new StringBuilder("/MainTabbedPage?");
+            sb.Append($"createTab={nameof(MyNavigationPage)}|{nameof(SpeakersPage)}");
+            sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(TalksPage)}");
+            sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(AboutPage)}");
+            //sb.Append($"&createTab={nameof(MyNavigationPage)}|{nameof(TalksPage)}");
             await NavigationService.NavigateAsync(sb.ToString());
         }
 
@@ -60,7 +58,7 @@ namespace ConfApp.Loading
         {
             for (var i = 0; i < 100; i++)
             {
-                await Task.Delay(5);
+                await Task.Delay(10);
                 var result = (double) i / 100;
                 Progress = result;
             }

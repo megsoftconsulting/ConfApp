@@ -21,9 +21,9 @@
 	<key>MinimumOSVersion</key>
 	<string>13.0</string>
 	<key>CFBundleDisplayName</key>
-	<string>PrismHub</string>
+	<string>ConfApp</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.megsoft.prismhub</string>
+	<string>com.megsoft.confapp</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>CFBundleIconFiles</key>
@@ -44,7 +44,16 @@
 		<string>Icon-Small@2x</string>
 		<string>Icon-Small@3x</string>
 	</array>
-	<key>UILaunchStoryboardName</key>
+  <key>NSMotionUsageDescription</key>
+  <string>Required for pedometer</string>
+  <key>NSLocationAlwaysUsageDescription</key>
+  <string>The beacons or geofences or GPS always have you!</string>
+  <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+  <string>The beacons or geofences or GPS always have you!</string>
+  <key>NSLocationWhenInUseUsageDescription</key>
+  <string>The beacons or geofences or GPS always have you!</string>
+
+  <key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>LaunchScreen</string>
@@ -58,5 +67,9 @@
 	<string>Assets.xcassets/AppIcon.appiconset</string>
 	<key>CFBundleShortVersionString</key>
 	<string>56</string>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>location</string>
+	</array>
 </dict>
 </plist>

@@ -8,7 +8,6 @@
              xmlns:confApp="clr-namespace:ConfApp;assembly=ConfApp"
              x:Class="ConfApp.Speakers.SpeakersPage"
              x:DataType="speakers:SpeakersViewModel"
-             xaml:ViewModelLocator.AutowireViewModel="True"
              IconImageSource="SpeakersTabIcon_Enabled"
              Title="{Binding Title}"
              ios:Page.UseSafeArea="True"
@@ -20,8 +19,7 @@
                     VerticalScrollBarVisibility="Never"
                     ItemsUpdatingScrollMode="KeepLastItemInView"
                     SelectionMode="None"
-                    SelectionChangedCommand="{Binding SelectedItemCommand}"
-                    SelectedItem="{Binding SelectedItem}"
+                    SelectionChangedCommand="{Binding NavigateToSpeakerCommand}"
                     ItemsSource="{Binding Items}"
                     VerticalOptions="FillAndExpand"
                     HorizontalOptions="StartAndExpand">
@@ -40,7 +38,7 @@
                                    Margin="0,0,0,0"
                                    Padding="11,8,11,8"
                                    CornerRadius="5">
-                                <Grid x:DataType="speakers:ItemViewModel"
+                                <Grid x:DataType="speakers:SpeakerModel"
                                       RowSpacing="2" Padding="0" Margin="0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
@@ -75,7 +73,7 @@
                                            Grid.Row="2" />
 
                                     <Frame
-                                        BackgroundColor="Transparent"
+                                        BackgroundColor="Aqua"
                                         Padding="0,0,10,0" WidthRequest="30"
                                         HasShadow="False"
                                         Grid.Row="0"
@@ -83,7 +81,13 @@
                                         Grid.Column="2">
                                         <Frame.GestureRecognizers>
                                             <TapGestureRecognizer
-                                                Command="{Binding ItemSelectedCommand}" />
+                                                Command="{Binding 
+                                                Source={RelativeSource 
+                                                AncestorType={x:Type speakers:SpeakersViewModel}},
+                                                Path=NavigateToSpeakerCommand}"
+                                                CommandParameter="{Binding 
+                                                Source={RelativeSource
+                                                AncestorType={x:Type speakers:SpeakerModel}}}" />
                                         </Frame.GestureRecognizers>
                                         <Image Source="RightArrow"
 

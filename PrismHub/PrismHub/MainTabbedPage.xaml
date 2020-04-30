@@ -2,10 +2,7 @@
 <TabbedPage xmlns="http://xamarin.com/schemas/2014/forms"
             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
             xmlns:prism="http://prismlibrary.com"
-            xmlns:ConfApp="clr-namespace:ConfApp;assembly=ConfApp"
-            xmlns:speakers="clr-namespace:ConfApp.Speakers;assembly=ConfApp"
             xmlns:iOsSpecific="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-            xmlns:talks="clr-namespace:ConfApp.Talks;assembly=ConfApp"
             prism:ViewModelLocator.AutowireViewModel="True"
             SelectedTabColor="{DynamicResource PrimaryColor}"
             UnselectedTabColor="{DynamicResource UnselectedTabColor}"
@@ -16,4 +13,5 @@
             iOsSpecific:Page.UseSafeArea="True"
             NavigationPage.HasNavigationBar="True"
             x:Class="ConfApp.MainTabbedPage">
+
 </TabbedPage>
