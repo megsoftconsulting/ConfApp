@@ -307,7 +307,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\PrismHub\ConfApp.csproj">
+    <ProjectReference Include="..\ConfApp\ConfApp.csproj">
       <Project>{87C98F91-9462-444C-86B7-2E35785F4145}</Project>
       <Name>ConfApp</Name>
     </ProjectReference>
@@ -316,7 +316,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadUnhandledDeviceExceptionPrismHubiOSHideInfoBar="True" />
+      <UserProperties XamarinHotReloadUnhandledDeviceExceptionConfAppiOSHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>
