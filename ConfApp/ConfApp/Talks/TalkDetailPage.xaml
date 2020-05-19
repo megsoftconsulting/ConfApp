@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ConfApp.ViewModels;assembly=ConfApp"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:speakers="clr-namespace:ConfApp.Talks;assembly=ConfApp"
+             xmlns:talks="clr-namespace:ConfApp.Talks;assembly=ConfApp"
+             x:Class="ConfApp.Talks.TalkDetailPage"
+             x:DataType="talks:TalkDetailViewModel"
+             ios:Page.LargeTitleDisplay="Always"
+             ios:NavigationPage.PrefersLargeTitles="true"
+             ios:Page.UseSafeArea="True"
+             Title="Grace Hansen">
+    <ScrollView>
+        <StackLayout Orientation="Vertical" Spacing="0" Margin="16,0,16,16" Padding="0,20,0,0">
+            <Grid RowSpacing="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                <Image x:Name="SpeakerImage"
+                       VerticalOptions="StartAndExpand" HorizontalOptions="CenterAndExpand"
+                       Aspect="AspectFill" WidthRequest="400"
+                       Source="BigGrace"
+                       Grid.Row="0"
+                       Margin="0,0,0,10" />
+                <Label Text="Grace" HorizontalOptions="StartAndExpand"
+                       Grid.Row="1"
+                       FontSize="20" FontAttributes="Bold"
+                       TextColor="{DynamicResource TextColor}"
+                       VerticalOptions="StartAndExpand" Margin="0,0,0,-8" />
+                <Label Text="Bio" HorizontalOptions="StartAndExpand"
+                       Grid.Row="2"
+                       FontSize="45" FontAttributes="Bold"
+                       TextColor="{DynamicResource TextColor}"
+                       VerticalOptions="StartAndExpand" />
+                
+                <Label Grid.Row="4"
+                       VerticalOptions="StartAndExpand"
+                       TextColor="{DynamicResource BodyTextColor}"
+                       FontSize="Small"
+                       Text="Scott is a web developer who has been blogging at https://hanselman.com for over a decade. He works in Open Source on ASP.NET and the Azure Cloud for Microsoft out of his home office in Portland, Oregon. ... He's written a number of books and spoken in person to almost a half million developers worldwide." />
+            </Grid>
+        </StackLayout>
+
+    </ScrollView>
+</ContentPage>

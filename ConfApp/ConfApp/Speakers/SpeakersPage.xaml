@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:speakers="clr-namespace:ConfApp.Speakers;assembly=ConfApp"
+             xmlns:xaml="http://prismlibrary.com"
+             xmlns:confApp="clr-namespace:ConfApp;assembly=ConfApp"
+             x:Class="ConfApp.Speakers.SpeakersPage"
+             x:DataType="speakers:SpeakersViewModel"
+             IconImageSource="SpeakersTabIcon_Enabled"
+             Title="{Binding Title}"
+             ios:Page.UseSafeArea="True"
+             ios:Page.LargeTitleDisplay="Automatic">
+    <ContentPage.Content>
+        <StackLayout x:Name="Screen" Spacing="0" BackgroundColor="{DynamicResource LayoutColor}">
+            <StackLayout Margin="16,0,16,0" Padding="0,0,0,0">
+                <CollectionView
+                    VerticalScrollBarVisibility="Never"
+                    ItemsUpdatingScrollMode="KeepLastItemInView"
+                    SelectionMode="None"
+                    SelectionChangedCommand="{Binding NavigateToSpeakerCommand}"
+                    ItemsSource="{Binding Items}"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="StartAndExpand">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.EmptyViewTemplate>
+                        <DataTemplate>
+                            <Label Text="Empty View" />
+                        </DataTemplate>
+                    </CollectionView.EmptyViewTemplate>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="{DynamicResource BackgroundColor}"
+                                   HasShadow="False"
+                                   Margin="0,0,0,0"
+                                   Padding="11,8,11,8"
+                                   CornerRadius="5">
+                                <Grid x:DataType="speakers:SpeakerModel"
+                                      RowSpacing="2" Padding="0" Margin="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                    </Grid.ColumnDefinitions>
+                                    <Frame Grid.RowSpan="3"
+                                           Grid.Column="0"
+                                           HasShadow="False"
+                                           CornerRadius="25"
+                                           HeightRequest="58"
+                                           WidthRequest="58"
+                                           IsClippedToBounds="True"
+                                           HorizontalOptions="Center"
+                                           Padding="0">
+                                        <Image Aspect="AspectFit"
+                                               Source="{Binding Image}" />
+                                    </Frame>
+
+                                    <Label Text="{Binding Name}" Style="{DynamicResource TileTitle}"
+                                           Grid.Column="1"
+                                           Grid.Row="0" />
+                                    <Label Text="{Binding Description}" 
+                                           Style="{DynamicResource TileSubtitle}"
+                                           Grid.Column="1"
+                                           Grid.Row="1" />
+                                    <Label Text="{Binding Company}" FontSize="Small"
+                                           TextColor="{DynamicResource SecondaryTextColor}" Grid.Column="1"
+                                           Grid.Row="2" />
+
+                                    <Frame
+                                        BackgroundColor="Transparent"
+                                        Padding="0,0,10,0" WidthRequest="30"
+                                        HasShadow="False"
+                                        Grid.Row="0"
+                                        Grid.RowSpan="3"
+                                        Grid.Column="2">
+                                        <Frame.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding 
+                                                Source={RelativeSource 
+                                                AncestorType={x:Type speakers:SpeakersViewModel}},
+                                                Path=NavigateToSpeakerCommand}"
+                                                CommandParameter="{Binding 
+                                                Source={RelativeSource
+                                                AncestorType={x:Type speakers:SpeakerModel}}}" />
+                                        </Frame.GestureRecognizers>
+                                        <Image Source="RightArrow"
+
+                                               HorizontalOptions="End"
+                                               VerticalOptions="Center" />
+                                    </Frame>
+                                </Grid>
+
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

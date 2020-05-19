@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:ConfApp.ViewModels;assembly=ConfApp"
+             xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:speakers="clr-namespace:ConfApp.Speakers;assembly=ConfApp"
+             xmlns:xaml="http://prismlibrary.com"
+             xmlns:talks="clr-namespace:ConfApp.Talks;assembly=ConfApp"
+             xmlns:confApp="clr-namespace:ConfApp;assembly=ConfApp"
+             x:Class="ConfApp.Talks.TalksPage"
+             x:DataType="talks:TalksViewModel"
+             ios:Page.UseSafeArea="True"
+             IconImageSource="SpeakersTabIcon_Enabled"
+             ios:Page.LargeTitleDisplay="Always"
+             Title="{Binding Title}"
+             BackgroundColor="{DynamicResource LayoutColor}">
+    <ContentPage.Content>
+        <StackLayout x:Name="Screen" Spacing="0"
+                     BackgroundColor="{DynamicResource LayoutColor}">
+            <StackLayout Margin="16,0,16,0">
+                <CollectionView
+                    VerticalScrollBarVisibility="Never"
+                    SelectionMode="None"
+                    SelectionChangedCommand="{Binding SelectedItemCommand}"
+                    ItemsSource="{Binding Items}"
+                    VerticalOptions="FillAndExpand"
+                    HorizontalOptions="StartAndExpand">
+                    <CollectionView.ItemsLayout>
+                        <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
+                    </CollectionView.ItemsLayout>
+                    <CollectionView.EmptyViewTemplate>
+                        <DataTemplate>
+                            <StackLayout VerticalOptions="FillAndExpand"
+                                         HorizontalOptions="FillAndExpand">
+                                <Label Text="Empty View"
+                                       VerticalOptions="CenterAndExpand"
+                                       HorizontalOptions="CenterAndExpand" />
+                            </StackLayout>
+                        </DataTemplate>
+                    </CollectionView.EmptyViewTemplate>
+                    <CollectionView.Header>
+                        <StackLayout Orientation="Horizontal" Padding="0,0,0,10" IsVisible="True">
+                            <Button HorizontalOptions="FillAndExpand"
+                                    HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                                    Text="Thursday" FontAttributes="Bold"
+                                    TextColor="{DynamicResource BackgroundColor}"
+                                    BackgroundColor="{DynamicResource PrimaryColor}" CornerRadius="15" />
+                            <Button HorizontalOptions="FillAndExpand"
+                                    HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                                    Text="Friday" FontAttributes="Bold"
+                                    TextColor="{DynamicResource SecondaryTextColor}"
+                                    BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
+                            <Button HorizontalOptions="FillAndExpand"
+                                    HeightRequest="30" Padding="10,10,10,10" Margin="0,20,0,0"
+                                    Text="Saturday" FontAttributes="Bold"
+                                    TextColor="{DynamicResource SecondaryTextColor}"
+                                    BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
+                        </StackLayout>
+                    </CollectionView.Header>
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate x:DataType="talks:TalkModel">
+                            <Frame BackgroundColor="{DynamicResource BackgroundColor}"
+                                   VerticalOptions="FillAndExpand"
+                                   Margin="0,0,0,0"
+                                   Padding="11,8,11,0"
+                                   HasShadow="False"
+                                   CornerRadius="5">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer
+                                        Command="{Binding 
+                                                Source={RelativeSource 
+                                                AncestorType={x:Type talks:TalksViewModel}},
+                                                Path=SelectedItemCommand}"
+                                        CommandParameter="{Binding 
+                                                Source={RelativeSource
+                                                AncestorType={x:Type talks:TalkModel}}}" />
+                                </Frame.GestureRecognizers>
+                                <Grid
+                                    RowSpacing="10"
+                                    ColumnSpacing="0"
+                                    Padding="0"
+                                    Margin="0">
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="30" />
+                                    </Grid.ColumnDefinitions>
+                                    <Label Text="{Binding Title}"
+                                           FontSize="15"
+                                           FontFamily=".SFUIText-Bold"
+                                           Grid.Row="0"
+                                           Grid.Column="0"
+                                           Grid.ColumnSpan="4" />
+
+                                    <StackLayout Orientation="Horizontal"
+                                                 Grid.Row="1"
+                                                 Grid.Column="0" Grid.ColumnSpan="3">
+                                        <Frame
+
+                                            HorizontalOptions="Start"
+                                            HasShadow="False"
+                                            CornerRadius="25"
+                                            HeightRequest="58"
+                                            WidthRequest="58"
+                                            IsClippedToBounds="True"
+                                            Padding="0">
+                                            <Image Aspect="AspectFit"
+                                                   Source="{Binding AvatarImage}" />
+                                        </Frame>
+                                        <StackLayout
+                                            Spacing="0"
+                                            VerticalOptions="Center">
+                                            <Label Text="{Binding SpeakerName}" 
+                                                   FontSize="Small"
+                                                   HorizontalOptions="StartAndExpand"
+                                                   TextColor="{DynamicResource  BodyTextColor}" />
+                                            <StackLayout
+                                                         Orientation="Horizontal">
+                                                <Image Source="time" HeightRequest="11"/>
+                                                <Label Text="{Binding When}"
+                                                       FontSize="Micro"
+                                                       TextColor="{DynamicResource   SecondaryTextColor}" />
+                                            </StackLayout>
+                                            <StackLayout    
+                                                Orientation="Horizontal">
+                                                <Image Source="location" HeightRequest="11"/>
+                                                <Label Text="{Binding Where}"
+                                                       FontSize="Micro"
+                                                       TextColor="{DynamicResource   SecondaryTextColor}" />
+                                            </StackLayout>
+                                           
+                                        </StackLayout>
+                                    </StackLayout>
+                                    <Frame
+                                       
+                                        Padding="0,0,0,0" 
+                                        HasShadow="False"
+                                        Grid.Row="0"
+                                        Grid.Column="4">
+                                        <Image Source="Star"></Image>
+                                    </Frame>
+                                    <Button
+                                        VerticalOptions="End"
+                                        CornerRadius="4"
+                                        FontSize="9"
+                                        HeightRequest="17" Padding="9,0,9,0"
+                                        BackgroundColor="{DynamicResource PrimaryColor}"
+                                        TextColor="White"
+                                        FontAttributes="Bold"
+                                        Grid.Row="1" 
+                                        Grid.Column="3" 
+                                        Grid.ColumnSpan="2" Text="SESSION"/>
+                                </Grid>
+
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+
+                </CollectionView>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

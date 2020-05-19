@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    x:Class="ConfApp.Styles">
+
+    <Color x:Key="BackgroundColor">#FFFFFFFF</Color>
+    <Color x:Key="BodyTextColor">#FF787D83</Color>
+    <Color x:Key="FacebookBlue">#FF3B5998</Color>
+    <Color x:Key="GoogleBackgroundColor">#FFFAFAFA</Color>
+    <Color x:Key="GoogleBorder">#FFEEEEEE</Color>
+    <Color x:Key="GoogleText">#FF8F99A5</Color>
+    <Color x:Key="ItemPrimaryTextColor">#FF3C3D3C</Color>
+    <Color x:Key="ItemSecondaryTextColor">#FF67717D</Color>
+    <Color x:Key="ItemTertiaryColor">#FFB7BFC8</Color>
+    <Color x:Key="LayoutColor">#FFF7F7F7</Color>
+    <Color x:Key="NavHeaderBackgroundColor">#CCF7F7F7</Color>
+    <Color x:Key="NoLoginBackgroundColor">#FFECEEF1</Color>
+    <Color x:Key="PrimaryColor">#FFDD1783</Color>
+    <Color x:Key="SecondaryTextColor">#FFBEBEBE</Color>
+    <Color x:Key="TitleTextColor">#FF000000</Color>
+    <Color x:Key="TwitterBlue">#FF00ACEE</Color>
+    <Color x:Key="UnselectedTabColor">#FFD5C9D0</Color>
+</ResourceDictionary>                                                     

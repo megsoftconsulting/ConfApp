@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:prism="http://prismlibrary.com"
+             xmlns:iOsSpecific="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
+             xmlns:pv="clr-namespace:Xamarin.Forms.PancakeView;assembly=Xamarin.Forms.PancakeView"
+             xmlns:login="clr-namespace:ConfApp.Login;assembly=ConfApp"
+             prism:ViewModelLocator.AutowireViewModel="True"
+             BackgroundColor="{DynamicResource GoogleBackgroundColor}"
+             iOsSpecific:Page.UseSafeArea="True"
+             Title="{Binding Title}"
+             x:DataType="login:LoginViewModel"
+             x:Class="ConfApp.Login.LoginPage">
+    <ScrollView BackgroundColor="{DynamicResource GoogleBackgroundColor}">
+        <Grid RowSpacing="8" Margin="20,80,20,20">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <pv:PancakeView>
+                <Image Source="Login_Palm"
+                       VerticalOptions="CenterAndExpand"
+                       HorizontalOptions="CenterAndExpand" />
+            </pv:PancakeView>
+            <Label
+                Grid.Row="1"
+                FontSize="44"
+                Padding="0,10,0,0"
+                FontAttributes="Bold"
+                VerticalOptions="CenterAndExpand"
+                HorizontalOptions="CenterAndExpand"
+                Text="Welcome!" />
+
+            <Label Grid.Row="2" 
+                   Margin="20,0,20,0"
+                   TextColor="{DynamicResource ItemSecondaryTextColor}"
+                   FontSize="14"
+                   HorizontalOptions="CenterAndExpand"
+                   VerticalOptions="StartAndExpand"
+                   Text="We recommend you sign in to enjoy a personalized experience by building your schedule, getting custom notifications, and more.!" />
+            <StackLayout
+                VerticalOptions="StartAndExpand"
+                Grid.Row="3">
+                <Button
+                    ImageSource="Facebook_Icon"
+                    HorizontalOptions="CenterAndExpand"
+                    WidthRequest="250"
+                    HeightRequest="50"
+                    Text="Sign in with Facebook" FontAttributes="Bold"
+                    TextColor="{DynamicResource BackgroundColor}"
+                    BackgroundColor="{DynamicResource FacebookBlue}"
+                    Command="{Binding SocialLoginCommand}"
+                    CommandParameter="facebook"
+                    CornerRadius="10" />
+                <Button
+
+                    ImageSource="Twitter_Icon"
+                    HorizontalOptions="CenterAndExpand"
+                    HeightRequest="50"
+                    WidthRequest="250"
+
+                    Text="Sign in with Twitter" FontAttributes="Bold"
+                    TextColor="{DynamicResource BackgroundColor}"
+                    BackgroundColor="{DynamicResource TwitterBlue}"
+                    CornerRadius="10"
+                    Command="{Binding SocialLoginCommand}"
+                    CommandParameter="twitter" />
+                <Button
+                    ImageSource="Google_Icon"
+                    HorizontalOptions="CenterAndExpand"
+                    HeightRequest="50"
+                    WidthRequest="250"
+                    Text="Sign in with Google"
+                    BorderWidth="1"
+                    FontAttributes="Bold"
+                    TextColor="{DynamicResource GoogleText}"
+                    BackgroundColor="{DynamicResource BackgroundColor}"
+                    BorderColor="{DynamicResource GoogleBorder}"
+                    CornerRadius="10"
+                    Command="{Binding SocialLoginCommand}"
+                    CommandParameter="google" />
+                <Button
+                    HorizontalOptions="CenterAndExpand"
+                    HeightRequest="50"
+                    WidthRequest="250"
+                    Text="Continue without Login in" FontAttributes="Bold"
+                    TextColor="{DynamicResource GoogleText}"
+                    BackgroundColor="{DynamicResource NoLoginBackgroundColor}"
+                    BorderColor="{DynamicResource GoogleBorder}"
+                    Command="{Binding NoLoginCommand}"
+                    CornerRadius="10" />
+            </StackLayout>
+
+
+        </Grid>
+
+    </ScrollView>
+</ContentPage>

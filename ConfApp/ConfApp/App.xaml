@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<prism:PrismApplication xmlns="http://xamarin.com/schemas/2014/forms"
+                        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                        xmlns:prism="clr-namespace:Prism.DryIoc;assembly=Prism.DryIoc.Forms"
+                        xmlns:confApp="clr-namespace:ConfApp;assembly=ConfApp"
+                        x:Class="ConfApp.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Colors.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Fonts.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="Icons.xaml"></ResourceDictionary>
+                <ResourceDictionary Source="DataTemplates.xaml"/>
+                <ResourceDictionary Source="Styles.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+
+
+        <!-- STYLES -->
+        <Style TargetType="{x:Type confApp:BigTitleNavigationPage}">
+            <Setter Property="BarBackgroundColor" Value="{DynamicResource NavHeaderBackgroundColor}" />
+            <Setter Property="BarTextColor" Value="{DynamicResource TextColor}" />
+        </Style>
+
+        <Style TargetType="{x:Type confApp:MainPage}">
+            <Setter Property="BarBackgroundColor" Value="{DynamicResource NavHeaderBackgroundColor}" />
+            <Setter Property="BarTextColor" Value="{DynamicResource TextColor}" />
+            <Setter Property="SelectedTabColor" Value="{DynamicResource PrimaryColor}" />
+            <Setter Property="UnselectedTabColor" Value="{DynamicResource UnselectedTabColor}" />
+
+        </Style>
+
+        <Style TargetType="{x:Type Label}" x:Key="TileTitle">
+            <Setter Property="FontFamily" Value="{DynamicResource FontFamilyBold}" />
+            <Setter Property="FontSize" Value="15" />
+            <Setter Property="TextColor" Value="{DynamicResource ItemPrimaryTextColor}" />
+
+        </Style>
+
+        <Style TargetType="{x:Type Label}" x:Key="TileSubtitle">
+            <Setter Property="FontFamily" Value="{DynamicResource FontFamilyRegular}" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="TextColor" Value="{DynamicResource ItemSecondaryTextColor}" />
+        </Style>
+        <!--FONTS -->
+        <OnPlatform x:Key="FontFamilyRegular" x:TypeArguments="x:String">
+            <On Platform="iOS">.SFUIText</On>
+        </OnPlatform>
+        <OnPlatform x:Key="FontFamilyMedium" x:TypeArguments="x:String">
+            <On Platform="iOS">.SFUIText-Medium</On>
+        </OnPlatform>
+        <OnPlatform x:Key="FontFamilyBold" x:TypeArguments="x:String">
+            <On Platform="iOS">.SFUIText-Semibold</On>
+        </OnPlatform>
+        <!--Icon Fonts -->
+
+        <!--ICONS -->
+
+
+        <!-- Application resource dictionary -->
+
+    </Application.Resources>
+</prism:PrismApplication>
