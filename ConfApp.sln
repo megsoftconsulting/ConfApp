@@ -91,6 +91,7 @@ Global
 		{0AB60F82-5071-476D-981D-4A7590114624}.Release|Any CPU.ActiveCfg = Release|iPhone
 		{0AB60F82-5071-476D-981D-4A7590114624}.Release|iPhone.ActiveCfg = Release|iPhone
 		{0AB60F82-5071-476D-981D-4A7590114624}.Release|iPhone.Build.0 = Release|iPhone
+		{0AB60F82-5071-476D-981D-4A7590114624}.Release|iPhone.Deploy.0 = Release|iPhone
 		{0AB60F82-5071-476D-981D-4A7590114624}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{0AB60F82-5071-476D-981D-4A7590114624}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
 	EndGlobalSection

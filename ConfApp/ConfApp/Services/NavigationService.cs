@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using ConfApp.Services.Telemetry;
 using Prism.Behaviors;
@@ -25,12 +26,13 @@ namespace ConfApp.Services
             _telemetryService = telemetryService;
         }
 
-        public override Task<INavigationResult> NavigateAsync(string name, INavigationParameters parameters)
+        protected override Task<INavigationResult> NavigateInternal(Uri uri, INavigationParameters parameters,
+            bool? useModalNavigation, bool animated)
         {
-            var result = base.NavigateAsync(name, parameters);
+            var result = base.NavigateInternal(uri, parameters, useModalNavigation, animated);
 
-            if (result.Result.Success)
-                _telemetryService.TrackEvent(new EventBase($"Navigated to {_mostRecentPageTitle}"));
+            //if (result.Result.Success)
+            //    _telemetryService.TrackEvent(new EventBase($"Navigated to {_mostRecentPageTitle?}"));
 
             return result;
         }
@@ -52,21 +54,9 @@ namespace ConfApp.Services
             int navigationOffset = 0)
         {
             _mostRecentPageTitle = string.IsNullOrWhiteSpace(page.Title) ? page.GetType().Name : page.Title;
-            Debug.WriteLine($"Navigating to {_mostRecentPageTitle}");
+            // Debug.WriteLine($"Navigating to {_mostRecentPageTitle}");
 
             return base.DoPush(currentPage, page, useModalNavigation, animated, insertBeforeLast, navigationOffset);
-        }
-
-        protected override Page CreatePageFromSegment(string segment)
-        {
-            Debug.WriteLine($"Create Page From Segment {segment}");
-            return base.CreatePageFromSegment(segment);
-        }
-
-        protected override Page CreatePage(string segmentName)
-        {
-            Debug.WriteLine($"Create Page {segmentName}");
-            return base.CreatePage(segmentName);
         }
     }
 }

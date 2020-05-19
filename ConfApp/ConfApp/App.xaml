@@ -45,13 +45,13 @@
         </Style>
         <!--FONTS -->
         <OnPlatform x:Key="FontFamilyRegular" x:TypeArguments="x:String">
-            <On Platform="iOS">.SFUIText</On>
+            <On Platform="iOS"></On>
         </OnPlatform>
         <OnPlatform x:Key="FontFamilyMedium" x:TypeArguments="x:String">
-            <On Platform="iOS">.SFUIText-Medium</On>
+            <On Platform="iOS"></On>
         </OnPlatform>
         <OnPlatform x:Key="FontFamilyBold" x:TypeArguments="x:String">
-            <On Platform="iOS">.SFUIText-Semibold</On>
+            <On Platform="iOS"></On>
         </OnPlatform>
         <!--Icon Fonts -->
 

@@ -46,6 +46,17 @@
                                Margin="0,0,0,0"
                                Padding="11,8,11,8"
                                CornerRadius="5">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding 
+                                                Source={RelativeSource 
+                                                AncestorType={x:Type speakers:SpeakersViewModel}},
+                                                Path=NavigateToSpeakerCommand}"
+                                    CommandParameter="{Binding 
+                                                Source={RelativeSource
+                                                AncestorType={x:Type speakers:SpeakerModel}}}" />
+                            </Frame.GestureRecognizers>
+
                             <Grid x:DataType="speakers:SpeakerModel"
                                   RowSpacing="2" Padding="0" Margin="0">
                                 <Grid.RowDefinitions>
@@ -83,22 +94,13 @@
                                        Grid.Row="2" />
 
                                 <Frame
-                                    BackgroundColor="Transparent"
+                                    
                                     Padding="0,0,10,0" WidthRequest="30"
                                     HasShadow="False"
                                     Grid.Row="0"
                                     Grid.RowSpan="3"
                                     Grid.Column="2">
-                                    <Frame.GestureRecognizers>
-                                        <TapGestureRecognizer
-                                            Command="{Binding 
-                                                Source={RelativeSource 
-                                                AncestorType={x:Type speakers:SpeakersViewModel}},
-                                                Path=NavigateToSpeakerCommand}"
-                                            CommandParameter="{Binding 
-                                                Source={RelativeSource
-                                                AncestorType={x:Type speakers:SpeakerModel}}}" />
-                                    </Frame.GestureRecognizers>
+
                                     <Image Source="RightArrow"
 
                                            HorizontalOptions="End"

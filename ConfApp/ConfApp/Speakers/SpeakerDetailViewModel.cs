@@ -1,5 +1,6 @@
 ﻿using System;
 using ConfApp.Services;
+using ConfApp.Services.Telemetry;
 using ConfApp.ViewModels;
 using Prism.Navigation;
 
@@ -10,8 +11,10 @@ namespace ConfApp.Speakers
         private readonly ISpeakerService _speakerService;
         private SpeakerModel _speakerModel;
 
-        public SpeakerDetailViewModel(INavigationService navigationService, ISpeakerService speakerService) : base(
-            navigationService)
+        public SpeakerDetailViewModel(INavigationService navigationService,
+            ISpeakerService speakerService,
+            ITelemetryService telemetryService) : base(
+            navigationService, telemetryService)
         {
             _speakerService = speakerService;
         }

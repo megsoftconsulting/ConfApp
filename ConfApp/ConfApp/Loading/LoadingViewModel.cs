@@ -25,7 +25,7 @@ namespace ConfApp.Loading
             ITelemetryService telemetry, 
             IDialogService dialogService,
             IPromptService promptService
-        ) : base(navigationService)
+        ) : base(navigationService, telemetry)
         {
             _telemetry = telemetry;
             _dialogService = dialogService;

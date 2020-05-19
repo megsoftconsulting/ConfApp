@@ -216,6 +216,12 @@
     <ImageAsset Include="Assets.xcassets\Facebook_Icon.imageset\facebook.pdf">
       <Visible>false</Visible>
     </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\star_unselected.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\star_selected.imageset\Contents.json">
+      <Visible>false</Visible>
+    </ImageAsset>
     <ImageAsset Include="Assets.xcassets\Star.imageset\Contents.json">
       <Visible>false</Visible>
     </ImageAsset>
@@ -226,6 +232,12 @@
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\Star.imageset\star.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\star_selected.imageset\star_selected.pdf">
+      <Visible>false</Visible>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\star_unselected.imageset\star_unselected.pdf">
       <Visible>false</Visible>
     </ImageAsset>
     <ImageAsset Include="Assets.xcassets\time.imageset\Contents.json">
@@ -374,7 +386,7 @@
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\iOS\Xamarin.iOS.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
-      <UserProperties XamarinHotReloadUnhandledDeviceExceptionPrismHubiOSHideInfoBar="True" XamarinHotReloadDebuggerTimeoutExceptionConfAppiOSHideInfoBar="True" />
+      <UserProperties XamarinHotReloadDebuggerTimeoutExceptionConfAppiOSHideInfoBar="True" XamarinHotReloadUnhandledDeviceExceptionPrismHubiOSHideInfoBar="True" />
     </VisualStudio>
   </ProjectExtensions>
 </Project>

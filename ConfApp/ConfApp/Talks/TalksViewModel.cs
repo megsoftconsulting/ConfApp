@@ -1,24 +1,21 @@
 ﻿using System.Collections.ObjectModel;
+using ConfApp.Services.Telemetry;
 using ConfApp.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
 
 namespace ConfApp.Talks
 {
-    public class TalksViewModel : ViewModelBase
+    public class TalksViewModel : TabViewModelBase
     {
         private ObservableCollection<TalkModel> _items = new ObservableCollection<TalkModel>();
 
-        public TalksViewModel(INavigationService navigationService)
-            : base(navigationService)
+        public TalksViewModel(INavigationService navigationService,
+            ITelemetryService telemetryService)
+            : base(navigationService, telemetryService)
         {
             Title = "Sessions";
             SelectedItemCommand = new DelegateCommand<TalkModel>(OnSelectedItem);
-        }
-
-        private async void OnSelectedItem(TalkModel obj)
-        {
-            await NavigationService.NavigateAsync("TalksDetailPage");
         }
 
         public DelegateCommand<TalkModel> SelectedItemCommand { get; set; }
@@ -30,8 +27,14 @@ namespace ConfApp.Talks
             set => SetProperty(ref _items, value);
         }
 
+        private async void OnSelectedItem(TalkModel obj)
+        {
+            await NavigationService.NavigateAsync("TalksDetailPage");
+        }
+
         public override void Initialize(INavigationParameters parameters)
         {
+            base.Initialize(parameters);
             AddMockData();
         }
 

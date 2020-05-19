@@ -2,12 +2,9 @@
 
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:viewModels="clr-namespace:ConfApp.ViewModels;assembly=ConfApp"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
-             xmlns:speakers="clr-namespace:ConfApp.Speakers;assembly=ConfApp"
-             xmlns:xaml="http://prismlibrary.com"
              xmlns:talks="clr-namespace:ConfApp.Talks;assembly=ConfApp"
-             xmlns:confApp="clr-namespace:ConfApp;assembly=ConfApp"
+             xmlns:userControl="clr-namespace:ConfApp.UserControl;assembly=ConfApp"
              x:Class="ConfApp.Talks.TalksPage"
              x:DataType="talks:TalksViewModel"
              ios:Page.UseSafeArea="True"
@@ -95,7 +92,6 @@
                             </Grid.ColumnDefinitions>
                             <Label Text="{Binding Title}"
                                    FontSize="15"
-                                   FontFamily=".SFUIText-Bold"
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    Grid.ColumnSpan="4" />
@@ -145,7 +141,28 @@
                                 HasShadow="False"
                                 Grid.Row="0"
                                 Grid.Column="4">
-                                <Image Source="Star" />
+                                <userControl:FavoriteButton/>
+                                    
+                                <!--<CheckBox Color="{DynamicResource PrimaryColor}">
+                             </CheckBox>-->
+                                <!--<ImageButton>
+                                    <VisualStateManager.VisualStateGroups>
+                                        <VisualStateGroup x:Name="CommonStates">
+                                            <VisualState x:Name="Pressed">
+                                                <VisualState.Setters>
+                                                    <Setter Property="Source"
+                                                            Value="star_selected" />
+                                                </VisualState.Setters>
+                                                </VisualState>
+                                            <VisualState x:Name="Normal">
+                                                <VisualState.Setters>
+                                                    <Setter Property="Source"
+                                                            Value="star_unselected" />
+                                                </VisualState.Setters>
+                                            </VisualState>
+                                        </VisualStateGroup>
+                                    </VisualStateManager.VisualStateGroups>
+                                </ImageButton>-->
                             </Frame>
                             <Button
                                 VerticalOptions="End"

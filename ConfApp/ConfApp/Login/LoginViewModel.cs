@@ -32,7 +32,7 @@ namespace ConfApp.Login
             IBrowser browser,
             IPromptService promptService)
             : base(
-                navigationService)
+                navigationService, telemetry)
         {
             _telemetry = telemetry;
             _browser = browser;

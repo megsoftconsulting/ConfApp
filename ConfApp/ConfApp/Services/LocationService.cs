@@ -27,7 +27,7 @@ namespace ConfApp.Services
             }
             catch (Exception ex)
             {
-                //_telemetryService.TrackError(ex);
+                //TelemetryService.TrackError(ex);
                 Debug.WriteLine(ex);
             }
 
@@ -57,22 +57,22 @@ namespace ConfApp.Services
             catch (FeatureNotSupportedException fnsEx)
             {
                 // Handle not supported on device exception
-                //_telemetryService.TrackError(fnsEx);
+                //TelemetryService.TrackError(fnsEx);
             }
             catch (FeatureNotEnabledException fneEx)
             {
                 // Handle not enabled on device exception
-                // _telemetryService.TrackError(fneEx);
+                // TelemetryService.TrackError(fneEx);
             }
             catch (PermissionException pEx)
             {
                 // Handle permission exception
-                // _telemetryService.TrackError(pEx);
+                // TelemetryService.TrackError(pEx);
             }
             catch (Exception ex)
             {
                 // Unable to get location
-                //_telemetryService.TrackError(ex);
+                //TelemetryService.TrackError(ex);
             }
 
             return null;

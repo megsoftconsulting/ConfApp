@@ -2,28 +2,30 @@
 using System.Diagnostics;
 using System.Threading.Tasks;
 using ConfApp.Services;
+using ConfApp.Services.Telemetry;
 using ConfApp.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
 
 namespace ConfApp.Speakers
 {
-    public class SpeakersViewModel : ViewModelBase
+    public class SpeakersViewModel : TabViewModelBase
     {
         private readonly ISpeakerService _speakerService;
 
         private bool _isRefreshing;
         private ObservableCollection<SpeakerModel> _items = new ObservableCollection<SpeakerModel>();
-        private bool _wasInitialized;
 
-        public SpeakersViewModel(INavigationService navigationService, ISpeakerService speakerService)
-            : base(navigationService)
+        public SpeakersViewModel(
+            INavigationService navigationService,
+            ISpeakerService speakerService,
+            ITelemetryService telemetryService)
+            : base(navigationService, telemetryService)
         {
             _speakerService = speakerService;
             Title = "Speakers";
             NavigateToProfileCommand = new DelegateCommand(LoadTheData);
             NavigateToSpeakerCommand = new DelegateCommand<SpeakerModel>(OnNavigateToSpeaker);
-            IsTabActiveChanged += OnTabActiveChanged;
         }
 
         public bool IsRefreshing
@@ -41,17 +43,10 @@ namespace ConfApp.Speakers
             set => SetProperty(ref _items, value);
         }
 
-        private void OnTabActiveChanged(object sender, bool e)
-        {
-            if (!_wasInitialized) return;
-            var status = IsActive ? "Active" : "Inactive";
-            Debug.WriteLine($"Speakers Tab Is {status}");
-        }
 
         public override async void Initialize(INavigationParameters parameters)
         {
-            _wasInitialized = true;
-            await Task.Delay(5000);
+            await Task.Delay(2000);
             LoadTheData();
         }
 
@@ -82,11 +77,6 @@ namespace ConfApp.Speakers
 
         private void OnNavigateToProfile()
         {
-        }
-
-        public override void Destroy()
-        {
-            IsTabActiveChanged -= OnTabActiveChanged;
         }
     }
 }

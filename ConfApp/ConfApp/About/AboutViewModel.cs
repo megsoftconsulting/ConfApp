@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using ConfApp.Services;
+using ConfApp.Services.Telemetry;
 using ConfApp.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
@@ -14,10 +15,10 @@ using Xamarin.Forms.Maps;
 
 namespace ConfApp.About
 {
-    public class AboutViewModel : ViewModelBase
+    public class AboutViewModel : TabViewModelBase
     {
         private readonly IEventHubProducer _client;
-        private readonly IGeofencingService _geofencingService;
+        private readonly IGeofencingService _geofenceService;
         private readonly ILocationService _locationService;
 
         private readonly CancellationTokenSource _token = new CancellationTokenSource();
@@ -28,11 +29,12 @@ namespace ConfApp.About
         public AboutViewModel(INavigationService navigationService,
             IEventHubProducer client,
             ILocationService locationService,
-            IGeofencingService geofencingService) : base(navigationService)
+            ITelemetryService telemetryService,
+            IGeofencingService geofenceService) : base(navigationService, telemetryService)
         {
             _client = client;
             _locationService = locationService;
-            _geofencingService = geofencingService;
+            _geofenceService = geofenceService;
             Title = "About";
             //StartUpdatesCommand = new DelegateCommand(StartUpdates);
             AddRegionToMapCommand = new DelegateCommand(AddRegionToMap);
@@ -79,7 +81,7 @@ namespace ConfApp.About
             var r = 50;
 
             if (l == null) return;
-            _geofencingService
+            _geofenceService
                 .StartMonitoring(
                     l.Latitude,
                     l.Longitude,
@@ -93,8 +95,7 @@ namespace ConfApp.About
                 StrokeColor = Color.Blue,
                 StrokeWidth = 2,
                 Center = new Position(l.Latitude, l.Longitude),
-                Radius = Distance.FromMeters(r),
-               
+                Radius = Distance.FromMeters(r)
             };
             p.MapElementId = id;
 
@@ -103,7 +104,8 @@ namespace ConfApp.About
 
         public override void Initialize(INavigationParameters parameters)
         {
-            _geofencingService.Clear();
+            base.Initialize(parameters);
+            _geofenceService.Clear();
         }
 
         private async Task UpdateMyLocationPassively()
@@ -125,10 +127,6 @@ namespace ConfApp.About
 
                 Thread.Sleep(5000);
             }
-        }
-
-        public override void Destroy()
-        {
         }
     }
 }
