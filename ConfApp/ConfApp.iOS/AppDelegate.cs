@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Threading.Tasks;
 using ConfApp.iOS.Services;
+using ConfApp.Services.Telemetry;
 using Foundation;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
@@ -19,6 +20,7 @@ namespace ConfApp.iOS
     public class AppDelegate : FormsApplicationDelegate
     {
         private iOSBackgroundTask _task;
+        private ITelemetryService _telemetryService;
 
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
@@ -31,12 +33,17 @@ namespace ConfApp.iOS
         {
             InitializeBeforeXamarinForms(app, options);
             ConfigureUnhandledErrorHandling(app, options);
-
             Forms.Init();
-            FormsMaps.Init();
             InitializeControls(app, options);
+            //var application = new App(new iOSInitializer());
+
+            //_telemetryService = application
+            //    .Container
+            //    .Resolve(typeof(ITelemetryService)) as ITelemetryService;
+
+            //_telemetryService?.TrackEvent(new EventBase("Application Launched Successfully."));
+
             LoadApplication(new App(new iOSInitializer()));
-            //StartBackgroundTasks();
             return base.FinishedLaunching(app, options);
         }
 

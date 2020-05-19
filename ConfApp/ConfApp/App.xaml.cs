@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text;
+﻿using System.Text;
 using System.Threading.Tasks;
 using ConfApp.About;
 using ConfApp.Loading;
@@ -8,10 +7,7 @@ using ConfApp.Services;
 using ConfApp.Services.Telemetry;
 using ConfApp.Speakers;
 using ConfApp.Talks;
-using IdentityModel.OidcClient.Browser;
 using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
 using Prism;
 using Prism.Ioc;
 using Prism.Modularity;
@@ -43,21 +39,16 @@ namespace ConfApp
         {
         }
 
+
         protected override async void OnInitialized()
         {
             InitializeComponent();
-            //await NavigateToTabbedPage();
+            await Task.Delay(10);
             var r = await NavigationService.NavigateAsync("/LoadingPage");
-            ////if (!r.Success) 
-            ////    await App
-            ////        .Current?.
-            ////        MainPage?.
-            ////        DisplayAlert("Could not Display Page",r.Exception.Message, "OK");
             if (!r.Success) throw r.Exception;
-            AppCenterLog.Info("Navigation", "Navigated to LoadingPage");
         }
 
-        
+
         private async Task NavigateToTabbedPage()
         {
             var sb = new StringBuilder("/MainPage?");

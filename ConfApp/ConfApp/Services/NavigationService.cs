@@ -13,11 +13,12 @@ namespace ConfApp.Services
     public class NavigationService : PageNavigationService
     {
         private readonly ITelemetryService _telemetryService;
+        private string _mostRecentPageTitle = string.Empty;
 
-        public NavigationService(IContainerExtension container, 
+        public NavigationService(IContainerExtension container,
             IApplicationProvider applicationProvider,
-            IPageBehaviorFactory pageBehaviorFactory, 
-            ILoggerFacade logger, 
+            IPageBehaviorFactory pageBehaviorFactory,
+            ILoggerFacade logger,
             ITelemetryService telemetryService) : base(container, applicationProvider,
             pageBehaviorFactory, logger)
         {
@@ -26,8 +27,11 @@ namespace ConfApp.Services
 
         public override Task<INavigationResult> NavigateAsync(string name, INavigationParameters parameters)
         {
-            Debug.WriteLine($"NavigateAsync {name},{parameters}");
             var result = base.NavigateAsync(name, parameters);
+
+            if (result.Result.Success)
+                _telemetryService.TrackEvent(new EventBase($"Navigated to {_mostRecentPageTitle}"));
+
             return result;
         }
 
@@ -47,8 +51,8 @@ namespace ConfApp.Services
             bool insertBeforeLast = false,
             int navigationOffset = 0)
         {
-            var title = string.IsNullOrWhiteSpace(page.Title) ? page.GetType().Name : page.Title;
-            Debug.WriteLine($"Navigating to {title}");
+            _mostRecentPageTitle = string.IsNullOrWhiteSpace(page.Title) ? page.GetType().Name : page.Title;
+            Debug.WriteLine($"Navigating to {_mostRecentPageTitle}");
 
             return base.DoPush(currentPage, page, useModalNavigation, animated, insertBeforeLast, navigationOffset);
         }

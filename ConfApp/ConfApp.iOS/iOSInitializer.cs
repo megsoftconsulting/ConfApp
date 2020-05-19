@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using ConfApp.iOS.Services;
+using ConfApp.Services;
 using IdentityModel.OidcClient.Browser;
 using Prism;
 using Prism.Ioc;
-using IGeofencingService = ConfApp.Services.IGeofencingService;
 
 namespace ConfApp.iOS
 {

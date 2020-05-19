@@ -14,7 +14,6 @@ using IdentityModel.OidcClient.Browser;
 using Prism.Commands;
 using Prism.Navigation;
 using Xamarin.Essentials;
-using Xamarin.Forms;
 
 namespace ConfApp.Login
 {
@@ -60,12 +59,11 @@ namespace ConfApp.Login
 
         private async void OnNoLogin()
         {
+            _telemetry.TrackEvent(new DidNotSignInEvent());
+
             var r = await NavigateToMainScreen();
-            if (r.Success)
-            {
-                _telemetry.TrackEvent(new DidNotSignInEvent());
-            }
-            else
+
+            if (!r.Success)
             {
                 await _promptService.DisplayAlert("Error", "Error while trying to navigate to the main page.", "OK");
                 _telemetry.TrackError(r.Exception);
