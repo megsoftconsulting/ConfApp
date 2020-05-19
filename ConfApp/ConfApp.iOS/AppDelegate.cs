@@ -94,7 +94,7 @@ namespace ConfApp.iOS
 
         private void InitializeControls(UIApplication app, NSDictionary options)
         {
-            FormsGoogleMaps.Init("AIzaSyBBmi8wp1mAFCjlVP_XuaTpPNgmrWZLnhE");
+            //FormsGoogleMaps.Init("AIzaSyBBmi8wp1mAFCjlVP_XuaTpPNgmrWZLnhE");
             FormsMaps.Init();
         }
     }

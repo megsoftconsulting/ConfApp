@@ -6,8 +6,6 @@
              xmlns:about="clr-namespace:ConfApp.About;assembly=ConfApp"
              xmlns:essentials="clr-namespace:Xamarin.Essentials;assembly=Xamarin.Essentials"
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
-             xmlns:googleMaps="clr-namespace:Xamarin.Forms.GoogleMaps;assembly=Xamarin.Forms.GoogleMaps"
-             xmlns:clustering="clr-namespace:Xamarin.Forms.GoogleMaps.Clustering;assembly=Xamarin.Forms.GoogleMaps.Clustering"
              prism:ViewModelLocator.AutowireViewModel="True"
              IconImageSource="AboutTabIcon"
              Title="{Binding Title}"
@@ -16,16 +14,16 @@
     <ScrollView>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <StackLayout 
+            <StackLayout
                 Grid.Row="0"
                 Margin="10"
                 Spacing="10"
-               
+
                 VerticalOptions="StartAndExpand"
                 HorizontalOptions="CenterAndExpand">
                 <Button
@@ -46,17 +44,13 @@
                     Text="Get Current Location"
                     Command="{Binding  GetCurrentLocationCommand}" />
             </StackLayout>
-            <googleMaps:Map 
+            <maps:Map
                 x:Name="map"
-                MyLocationEnabled="True"
+                IsShowingUser="True"
                 Grid.Row="1"
                 Grid.RowSpan="3"
-                IsVisible="True">
-            </googleMaps:Map>
-            <!--<clustering:ClusteredMap 
-                MyLocationEnabled="True"
-                Region=""
-                Grid.Row="1"/>--> 
+                IsVisible="True" />
+
         </Grid>
     </ScrollView>
 </ContentPage>

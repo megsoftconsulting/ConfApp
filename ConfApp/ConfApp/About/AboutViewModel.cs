@@ -10,7 +10,7 @@ using Prism.Commands;
 using Prism.Navigation;
 using Xamarin.Essentials;
 using Xamarin.Forms;
-using Xamarin.Forms.GoogleMaps;
+using Xamarin.Forms.Maps;
 
 namespace ConfApp.About
 {
@@ -94,8 +94,9 @@ namespace ConfApp.About
                 StrokeWidth = 2,
                 Center = new Position(l.Latitude, l.Longitude),
                 Radius = Distance.FromMeters(r),
-                Tag = id
+               
             };
+            p.MapElementId = id;
 
             Circles.Add(p);
         }
