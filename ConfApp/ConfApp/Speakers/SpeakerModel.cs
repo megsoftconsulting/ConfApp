@@ -1,8 +1,9 @@
-﻿using Prism.Mvvm;
+﻿using ConfApp.ViewModels;
+using Prism.Mvvm;
 
 namespace ConfApp.Speakers
 {
-    public class SpeakerModel : BindableBase
+    public class SpeakerModel : ModelBase
     {
         private string _bigImage;
         private string _company;

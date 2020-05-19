@@ -53,7 +53,7 @@ namespace ConfApp
             RegisterPages(c);
             c.RegisterSingleton<ILocationService, LocationService>();
             c.RegisterSingleton<IEventHubProducer, PassiveLocationService>();
-            c.RegisterSingleton<ISpeakerService, SpeakerService>();
+            c.RegisterInstance(typeof(ISpeakerService), new SpeakerService(new SpeakerService.SpeakerClientMock()));
         }
 
         protected override void ConfigureModuleCatalog(IModuleCatalog catalog)

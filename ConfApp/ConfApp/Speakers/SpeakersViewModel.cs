@@ -4,6 +4,8 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using ConfApp.Services;
 using ConfApp.ViewModels;
+using DynamicData;
+using DynamicData.PLinq;
 using Prism.Commands;
 using Prism.Navigation;
 
@@ -12,7 +14,7 @@ namespace ConfApp.Speakers
     public class SpeakersViewModel : ViewModelBase, IInitialize
     {
         private readonly ISpeakerService _speakerService;
-        private ObservableCollection<SpeakerModel> _items = new ObservableCollection<SpeakerModel>();
+        private ReadOnlyObservableCollection<SpeakerModel> _items;
 
         public SpeakersViewModel(INavigationService navigationService, ISpeakerService speakerService)
             : base(navigationService)
@@ -22,21 +24,20 @@ namespace ConfApp.Speakers
             NavigateToProfileCommand = new DelegateCommand(OnNavigateToProfile);
             NavigateToSpeakerCommand = new DelegateCommand<SpeakerModel>(OnNavigateToSpeaker);
             IsActiveChanged += OnIsActiveChanged;
+
+            _speakerService
+                .ChangeSet
+                .Bind(out _items)
+                .DisposeMany()
+                .Subscribe();
         }
        
         public DelegateCommand<SpeakerModel> NavigateToSpeakerCommand { get; set; }
         public DelegateCommand NavigateToProfileCommand { get; set; }
 
-        public ObservableCollection<SpeakerModel> Items
-        {
-            get => _items;
-            set => SetProperty(ref _items, value);
-        }
+        public ReadOnlyObservableCollection<SpeakerModel> Items => _items;
 
-        public async void Initialize(INavigationParameters parameters)
-        {
-            foreach (var item in await _speakerService.GetSpeakersAsync()) Items.Add(item);
-        }
+        public async void Initialize(INavigationParameters parameters) => await _speakerService.Get();
 
         private async void OnNavigateToSpeaker(SpeakerModel speaker)
         {
