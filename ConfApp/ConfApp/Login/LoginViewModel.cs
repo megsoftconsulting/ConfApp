@@ -79,7 +79,7 @@ namespace ConfApp.Login
             sb.Append($"createTab={nameof(BigTitleNavigationPage)}|{nameof(SpeakersPage)}");
             sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(TalksPage)}");
             sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(AboutPage)}");
-            sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(ContentPage)}");
+            //sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(ContentPage)}");
             var r = await NavigationService.NavigateAsync(sb.ToString());
             return r;
         }
