@@ -46,6 +46,7 @@
                    Text="We recommend you sign in to enjoy a personalized experience by building your schedule, getting custom notifications, and more.!" />
             <StackLayout
                 VerticalOptions="StartAndExpand"
+                Spacing="10"
                 Grid.Row="3">
                 <Button
                     ImageSource="Facebook_Icon"

@@ -35,15 +35,15 @@ namespace ConfApp.iOS
             ConfigureUnhandledErrorHandling(app, options);
             Forms.Init();
             InitializeControls(app, options);
-            //var application = new App(new iOSInitializer());
+            var application = new App(new iOSInitializer());
 
-            //_telemetryService = application
-            //    .Container
-            //    .Resolve(typeof(ITelemetryService)) as ITelemetryService;
+            _telemetryService = application
+                .Container
+                .Resolve(typeof(ITelemetryService)) as ITelemetryService;
 
-            //_telemetryService?.TrackEvent(new EventBase("Application Launched Successfully."));
+            _telemetryService?.TrackEvent(new EventBase("Application Launched Successfully."));
 
-            LoadApplication(new App(new iOSInitializer()));
+            LoadApplication(application);
             return base.FinishedLaunching(app, options);
         }
 
