@@ -31,6 +31,10 @@ namespace ConfApp.ViewModels
 
         public event EventHandler IsActiveChanged;
 
+        /// <summary>
+        /// Make sure you call base.Initialize()S
+        /// </summary>
+        /// <param name="parameters"></param>
         public override void Initialize(INavigationParameters parameters)
         {
             base.Initialize(parameters);
@@ -56,10 +60,9 @@ namespace ConfApp.ViewModels
 
         private void TrackTabIsActive()
         {
-            var message = $"Tab {Title} was Tabbed";
+            var message = $"Tab Is Active";
             TelemetryService
-                .TrackEvent(new EventBase(message));
-            Debug.WriteLine(message);
+                .TrackEvent(new EventBase(message).AddParameter("TabName", Title));
         }
     }
 

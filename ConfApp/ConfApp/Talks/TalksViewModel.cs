@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Diagnostics;
 using ConfApp.Services.Telemetry;
 using ConfApp.ViewModels;
 using Prism.Commands;
@@ -16,10 +17,13 @@ namespace ConfApp.Talks
         {
             Title = "Sessions";
             SelectedItemCommand = new DelegateCommand<TalkModel>(OnSelectedItem);
+            SetFavoriteCommand = new DelegateCommand<TalkModel>(OnTalkFavorited);
+            IsTabActiveChanged += OnIsTabActiveChanged;
         }
 
         public DelegateCommand<TalkModel> SelectedItemCommand { get; set; }
         public DelegateCommand NavigateToProfileCommand { get; set; }
+        public DelegateCommand<TalkModel> SetFavoriteCommand { get; }
 
         public ObservableCollection<TalkModel> Items
         {
@@ -27,17 +31,21 @@ namespace ConfApp.Talks
             set => SetProperty(ref _items, value);
         }
 
-        private async void OnSelectedItem(TalkModel obj)
+        private void OnIsTabActiveChanged(object sender, bool e)
         {
-            await NavigationService.NavigateAsync("TalksDetailPage");
-        }
-
-        public override void Initialize(INavigationParameters parameters)
-        {
-            base.Initialize(parameters);
+            _items.Clear();
             AddMockData();
         }
 
+        private void OnTalkFavorited(TalkModel talk)
+        {
+        }
+
+        private async void OnSelectedItem(TalkModel obj)
+        {
+            var r = await NavigationService.NavigateAsync("TalkDetailPage");
+            if (r.Success) Debug.WriteLine("Success");
+        }
 
         private void AddMockData()
         {

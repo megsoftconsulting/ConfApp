@@ -141,28 +141,17 @@
                                 HasShadow="False"
                                 Grid.Row="0"
                                 Grid.Column="4">
-                                <userControl:FavoriteButton/>
+                                <userControl:FavoriteButton
+                                    Command="{Binding 
+                                                Source={RelativeSource 
+                                                AncestorType={x:Type talks:TalksViewModel}},
+                                                Path=SetFavoriteCommand}"
+                                    CommandParameter="{Binding 
+                                                Source={RelativeSource
+                                                AncestorType={x:Type talks:TalkModel}}}"
+                                    />
                                     
-                                <!--<CheckBox Color="{DynamicResource PrimaryColor}">
-                             </CheckBox>-->
-                                <!--<ImageButton>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Pressed">
-                                                <VisualState.Setters>
-                                                    <Setter Property="Source"
-                                                            Value="star_selected" />
-                                                </VisualState.Setters>
-                                                </VisualState>
-                                            <VisualState x:Name="Normal">
-                                                <VisualState.Setters>
-                                                    <Setter Property="Source"
-                                                            Value="star_unselected" />
-                                                </VisualState.Setters>
-                                            </VisualState>
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                </ImageButton>-->
+                          
                             </Frame>
                             <Button
                                 VerticalOptions="End"

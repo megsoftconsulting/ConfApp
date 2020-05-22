@@ -88,10 +88,9 @@ namespace ConfApp.Services
                 var offset = location.Timestamp - DateTime.Now;
                 Debug.WriteLine($" The Known Last Location is {offset.TotalMilliseconds} Milliseconds old");
             }
-            catch (Exception ex)
+            catch (NullReferenceException ex)
             {
-                Debug.WriteLine($" Encountered an error while getting Last Known Location.{ex}");
-                // Log the error
+              // TODO: This is most likely because we are running on the simulator. Ignore it.
             }
 
             return location;

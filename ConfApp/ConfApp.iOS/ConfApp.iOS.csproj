@@ -116,6 +116,7 @@
   <ItemGroup>
     <Compile Include="Services\AsWebAuthenticationSessionBrowser.cs" />
     <Compile Include="FinishedLaunchingDelegate.cs" />
+    <Compile Include="Services\ScreenshotService.cs" />
     <Compile Include="Services\iOSBackgroundTask.cs" />
     <Compile Include="iOSInitializer.cs" />
     <Compile Include="Application.cs" />

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 using ConfApp.About;
 using ConfApp.Loading;
@@ -6,6 +7,7 @@ using ConfApp.Login;
 using ConfApp.Services;
 using ConfApp.Services.Telemetry;
 using ConfApp.Speakers;
+using ConfApp.Sync;
 using ConfApp.Talks;
 using Microsoft.AppCenter;
 using Prism;
@@ -96,6 +98,7 @@ namespace ConfApp
             containerRegistry.RegisterForNavigation<SpeakerDetailPage, SpeakerDetailViewModel>();
             containerRegistry.RegisterForNavigation<AboutPage, AboutViewModel>();
             containerRegistry.RegisterForNavigation<LoginPage, LoginViewModel>();
+            containerRegistry.RegisterForNavigation<SyncPage, SyncViewModel>();
         }
     }
 

@@ -46,7 +46,7 @@ namespace ConfApp.Speakers
 
         public override async void Initialize(INavigationParameters parameters)
         {
-            await Task.Delay(2000);
+            
             LoadTheData();
         }
 
@@ -69,7 +69,9 @@ namespace ConfApp.Speakers
 
         private async void OnNavigateToSpeaker(SpeakerModel speaker)
         {
-            var result = await NavigationService.NavigateAsync("SpeakerDetailPage", null, false, false);
+            var p = new NavigationParameters {{"Id", speaker.Id}};
+           
+            var result = await NavigationService.NavigateAsync("SpeakerDetailPage", p, true, true);
 
             if (!result.Success) Debug.WriteLine("Could not nav to SpeakerDetailPage");
         }

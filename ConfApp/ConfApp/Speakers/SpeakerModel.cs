@@ -15,7 +15,7 @@ namespace ConfApp.Speakers
         {
         }
 
-        public SpeakerModel(string firstName, string lastName, string description, string image, string company)
+        public SpeakerModel(string id,string firstName, string lastName, string description, string image, string company)
         {
             FirstName = firstName;
             LastName = lastName;
@@ -23,7 +23,13 @@ namespace ConfApp.Speakers
             Description = description;
             Image = image;
             BigImage = "Big" + Image;
+            SmallImage = Image;
+            Id = id;
         }
+
+        public string SmallImage { get; set; }
+
+        public string Id { get;  set; }
 
         public string Company
         {

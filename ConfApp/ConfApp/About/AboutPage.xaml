@@ -43,6 +43,14 @@
                     TextColor="White"
                     Text="Get Current Location"
                     Command="{Binding  GetCurrentLocationCommand}" />
+                <Button
+                    CornerRadius="10" Padding="20,0,20,0"
+                    VerticalOptions="CenterAndExpand"
+                    HorizontalOptions="FillAndExpand"
+                    BackgroundColor="{DynamicResource PrimaryColor}"
+                    TextColor="White"
+                    Text="Take screenshot"
+                    Command="{Binding  TakeScreenshotCommand}" />
             </StackLayout>
             <maps:Map
                 x:Name="map"

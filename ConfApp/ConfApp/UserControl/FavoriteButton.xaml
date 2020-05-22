@@ -4,16 +4,32 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:d="http://xamarin.com/schemas/2014/forms/design"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:userControl="clr-namespace:ConfApp.UserControl;assembly=ConfApp"
              mc:Ignorable="d"
-             x:Class="ConfApp.UserControl.FavoriteButton">
+             x:Class="ConfApp.UserControl.FavoriteButton"
+             x:Name="This">
+    <ContentView.Resources>
+        <userControl:NegateBooleanConverter x:Key="Inverter"/>
+    </ContentView.Resources>
     <ContentView.Content>
-        <StackLayout>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"></RowDefinition>
+            </Grid.RowDefinitions>
             <Button
-                ImageSource="star_selected"
-                x:Name="selectedButton" IsVisible="True" />
+                Clicked="OnClicked"
+                Grid.Row="0"
+                    HeightRequest="30"  
+                    ImageSource="star_selected" 
+                    x:Name="SelectedButton" 
+                    IsVisible="{Binding IsSelected, Source={x:Reference This}}" />
             <Button
-                ImageSource="star_unselected" IsVisible="False"
-                x:Name="unselectedButton" />
-        </StackLayout>
+                Clicked="OnClicked"
+                Grid.Row="0"
+                HeightRequest="30"
+                ImageSource="star_unselected" 
+                IsVisible="{Binding IsSelected, Source={x:Reference This}, Converter={StaticResource Inverter}}"
+                x:Name="UnselectedButton" />
+        </Grid>
     </ContentView.Content>
 </ContentView>

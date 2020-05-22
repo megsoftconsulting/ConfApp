@@ -1,9 +1,11 @@
 ﻿using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ConfApp.About;
 using ConfApp.Services;
 using ConfApp.Services.Telemetry;
 using ConfApp.Speakers;
+using ConfApp.Sync;
 using ConfApp.Talks;
 using ConfApp.ViewModels;
 using Prism.Navigation;
@@ -72,12 +74,7 @@ namespace ConfApp.Loading
 
         private async Task NavigateToTabbedPage()
         {
-            var sb = new StringBuilder("/MainPage?");
-            sb.Append($"createTab={nameof(BigTitleNavigationPage)}|{nameof(SpeakersPage)}");
-            sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(TalksPage)}");
-            sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(AboutPage)}");
-            //sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(TalksPage)}");
-            await NavigationService.NavigateAsync(sb.ToString());
+           await PageNavigationUtil.NavigateToMainPageAsync(NavigationService);
         }
 
         private async Task UpdateProgress()
@@ -91,6 +88,18 @@ namespace ConfApp.Loading
         }
     }
 
+    public static class PageNavigationUtil
+    {
+        public static Task NavigateToMainPageAsync(INavigationService service)
+        {
+            var sb = new StringBuilder("/MainPage?");
+            sb.Append($"createTab={nameof(BigTitleNavigationPage)}|{nameof(SpeakersPage)}");
+            sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(TalksPage)}");
+            sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(AboutPage)}");
+            sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(SyncPage)}");
+            return service.NavigateAsync(sb.ToString());
+        }
+    }
     public class AppLoadedEvent : EventBase
     {
         public AppLoadedEvent() : base("Application Loaded Successfully")

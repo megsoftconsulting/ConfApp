@@ -19,6 +19,7 @@ namespace ConfApp.About
     {
         private readonly IEventHubProducer _client;
         private readonly IGeofencingService _geofenceService;
+        private readonly IScreenshotService _screenshotService;
         private readonly ILocationService _locationService;
 
         private readonly CancellationTokenSource _token = new CancellationTokenSource();
@@ -30,15 +31,25 @@ namespace ConfApp.About
             IEventHubProducer client,
             ILocationService locationService,
             ITelemetryService telemetryService,
-            IGeofencingService geofenceService) : base(navigationService, telemetryService)
+            IGeofencingService geofenceService,
+            IScreenshotService screenshotService) : base(navigationService, telemetryService)
         {
             _client = client;
             _locationService = locationService;
             _geofenceService = geofenceService;
+            _screenshotService = screenshotService;
             Title = "About";
             //StartUpdatesCommand = new DelegateCommand(StartUpdates);
             AddRegionToMapCommand = new DelegateCommand(AddRegionToMap);
             GetCurrentLocationCommand = new DelegateCommand(GetCurrentLocation);
+            TakeScreenshotCommand = new DelegateCommand(OnTakescreenshot);
+        }
+
+        public DelegateCommand TakeScreenshotCommand { get; set; }
+
+        private void OnTakescreenshot()
+        {
+            var _ = _screenshotService.Capture();
         }
 
         public MapSpan RegionSpan

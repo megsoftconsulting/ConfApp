@@ -14,6 +14,7 @@ namespace ConfApp.iOS
         {
             c.Register<IBrowser, AsWebAuthenticationSessionBrowser>();
             c.RegisterSingleton<IGeofencingService, GeofencingService>();
+            c.RegisterSingleton<IScreenshotService, ScreenshotService>();
         }
     }
 }

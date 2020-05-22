@@ -2,6 +2,7 @@
 using ConfApp.Services;
 using ConfApp.Services.Telemetry;
 using ConfApp.ViewModels;
+using Prism.Commands;
 using Prism.Navigation;
 
 namespace ConfApp.Speakers
@@ -17,7 +18,10 @@ namespace ConfApp.Speakers
             navigationService, telemetryService)
         {
             _speakerService = speakerService;
+            CloseCommand = new DelegateCommand(async ()=> await NavigationService.GoBackAsync());
         }
+
+        public DelegateCommand CloseCommand { get; set; }
 
         public SpeakerModel Speaker
         {
@@ -27,7 +31,8 @@ namespace ConfApp.Speakers
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            Speaker = await _speakerService.GetSpeakerByIdAsync(Guid.NewGuid().ToString());
+            var id = parameters["Id"];
+            Speaker = await _speakerService.GetSpeakerByIdAsync(id.ToString());
         }
     }
 }

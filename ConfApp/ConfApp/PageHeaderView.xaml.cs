@@ -21,7 +21,7 @@ namespace ConfApp
             false,
             BindingMode.TwoWay);
 
-        public static readonly BindableProperty CommandProperty = BindableProperty.Create("Command",
+        public static readonly BindableProperty CommandProperty = BindableProperty.Create("InternalCommand",
             typeof(ICommand),
             typeof(PageHeaderView),
             new DelegateCommand(() => { }),
