@@ -1,7 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using ConfApp.iOS.Services;
 using ConfApp.Services.Telemetry;
+using FFImageLoading.Forms.Platform;
 using Foundation;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
@@ -97,12 +99,25 @@ namespace ConfApp.iOS
 
         private void ConfigureUnhandledErrorHandling(UIApplication app, NSDictionary options)
         {
+            AppDomain.CurrentDomain.UnhandledException += OnGlobalUnhandledException;
+            TaskScheduler.UnobservedTaskException += OnUnobservedTaskException;
+        }
+
+        private void OnUnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+        }
+
+        private void OnGlobalUnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
         }
 
         private void InitializeControls(UIApplication app, NSDictionary options)
         {
             //FormsGoogleMaps.Init("AIzaSyBBmi8wp1mAFCjlVP_XuaTpPNgmrWZLnhE");
             FormsMaps.Init();
+            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+            CachedImageRenderer.InitImageSourceHandler();
+            
         }
     }
 }

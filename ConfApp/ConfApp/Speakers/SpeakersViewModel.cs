@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using ConfApp.Services;
 using ConfApp.Services.Telemetry;
 using ConfApp.ViewModels;
@@ -44,9 +43,8 @@ namespace ConfApp.Speakers
         }
 
 
-        public override async void Initialize(INavigationParameters parameters)
+        public override void Initialize(INavigationParameters parameters)
         {
-            
             LoadTheData();
         }
 
@@ -54,8 +52,7 @@ namespace ConfApp.Speakers
         {
             IsRefreshing = true;
             Items.Clear();
-            foreach (var item in await _speakerService.GetSpeakersAsync()) Items.Add(item);
-
+            Items = new ObservableCollection<SpeakerModel>(await _speakerService.GetSpeakersAsync());
             IsRefreshing = false;
         }
 
@@ -70,8 +67,8 @@ namespace ConfApp.Speakers
         private async void OnNavigateToSpeaker(SpeakerModel speaker)
         {
             var p = new NavigationParameters {{"Id", speaker.Id}};
-           
-            var result = await NavigationService.NavigateAsync("SpeakerDetailPage", p, true, true);
+
+            var result = await NavigationService.NavigateAsync("SpeakerDetailPage", p, false);
 
             if (!result.Success) Debug.WriteLine("Could not nav to SpeakerDetailPage");
         }

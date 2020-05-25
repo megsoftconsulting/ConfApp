@@ -53,7 +53,15 @@ namespace ConfApp.Login
 
         public override async void OnAppearing()
         {
-            await Permissions.RequestAsync<Permissions.Maps>();
+            try
+            {
+                await Permissions.RequestAsync<Permissions.Maps>();
+            }
+            catch (Exception exception)
+            {
+                Debug.WriteLine(exception);
+            }
+
             base.OnAppearing();
         }
 
@@ -84,6 +92,7 @@ namespace ConfApp.Login
 
         private async void OnSocialLogin(string scheme)
         {
+            var r = await _authClient.LoginAsync();
             var e = new SignedInEvent(scheme);
             _telemetry.TrackEvent(e);
             _telemetry.SetCurrentUser("Claudio Sanchez", "claudio@megsoftconsulting.com");

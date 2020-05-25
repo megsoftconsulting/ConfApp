@@ -9,13 +9,15 @@
              IconImageSource="SpeakersTabIcon_Enabled"
              Title="{Binding Title}"
              ios:Page.UseSafeArea="True"
-             ios:Page.LargeTitleDisplay="Automatic">
+             ios:Page.LargeTitleDisplay="Automatic"
+             BackgroundColor="{DynamicResource LayoutColor}">
     <ContentPage.Content>
         <RefreshView
             IsRefreshing="{Binding IsRefreshing}"
             Command="{Binding NavigateToProfileCommand}">
             <CollectionView
-                BackgroundColor="{DynamicResource LayoutColor}"
+                Margin="15,0,15,0"
+               
                 VerticalScrollBarVisibility="Never"
                 ItemsUpdatingScrollMode="KeepLastItemInView"
                 SelectionMode="None"

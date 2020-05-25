@@ -21,21 +21,12 @@
             SelectionMode="None"
             SelectionChangedCommand="{Binding SelectedItemCommand}"
             ItemsSource="{Binding Items}"
+            ItemTemplate="{StaticResource TalkTemplate}"
             VerticalOptions="FillAndExpand"
             HorizontalOptions="StartAndExpand">
             <CollectionView.ItemsLayout>
                 <LinearItemsLayout Orientation="Vertical" ItemSpacing="5" />
             </CollectionView.ItemsLayout>
-            <CollectionView.EmptyViewTemplate>
-                <DataTemplate>
-                    <StackLayout VerticalOptions="FillAndExpand"
-                                 HorizontalOptions="FillAndExpand">
-                        <Label Text="Empty View"
-                               VerticalOptions="CenterAndExpand"
-                               HorizontalOptions="CenterAndExpand" />
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.EmptyViewTemplate>
             <CollectionView.Header>
                 <StackLayout Orientation="Horizontal" Padding="0,0,0,10" IsVisible="True">
                     <Button HorizontalOptions="FillAndExpand"
@@ -55,121 +46,6 @@
                             BackgroundColor="{DynamicResource  LayoutColor}" CornerRadius="15" />
                 </StackLayout>
             </CollectionView.Header>
-            <CollectionView.ItemTemplate>
-                <DataTemplate x:DataType="talks:TalkModel">
-                    <Frame BackgroundColor="{DynamicResource BackgroundColor}"
-                           VerticalOptions="FillAndExpand"
-                           Margin="0,0,0,0"
-                           Padding="11,8,11,0"
-                           HasShadow="False"
-                           CornerRadius="5">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer
-                                Command="{Binding 
-                                                Source={RelativeSource 
-                                                AncestorType={x:Type talks:TalksViewModel}},
-                                                Path=SelectedItemCommand}"
-                                CommandParameter="{Binding 
-                                                Source={RelativeSource
-                                                AncestorType={x:Type talks:TalkModel}}}" />
-                        </Frame.GestureRecognizers>
-                        <Grid
-                            RowSpacing="10"
-                            ColumnSpacing="0"
-                            Padding="0"
-                            Margin="0">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                                <ColumnDefinition Width="30" />
-                            </Grid.ColumnDefinitions>
-                            <Label Text="{Binding Title}"
-                                   FontSize="15"
-                                   Grid.Row="0"
-                                   Grid.Column="0"
-                                   Grid.ColumnSpan="4" />
-
-                            <StackLayout Orientation="Horizontal"
-                                         Grid.Row="1"
-                                         Grid.Column="0" Grid.ColumnSpan="3">
-                                <Frame
-
-                                    HorizontalOptions="Start"
-                                    HasShadow="False"
-                                    CornerRadius="25"
-                                    HeightRequest="58"
-                                    WidthRequest="58"
-                                    IsClippedToBounds="True"
-                                    Padding="0">
-                                    <Image Aspect="AspectFit"
-                                           Source="{Binding AvatarImage}" />
-                                </Frame>
-                                <StackLayout
-                                    Spacing="0"
-                                    VerticalOptions="Center">
-                                    <Label Text="{Binding SpeakerName}"
-                                           FontSize="Small"
-                                           HorizontalOptions="StartAndExpand"
-                                           TextColor="{DynamicResource  BodyTextColor}" />
-                                    <StackLayout
-                                        Orientation="Horizontal">
-                                        <Image Source="time" HeightRequest="11" />
-                                        <Label Text="{Binding When}"
-                                               FontSize="Micro"
-                                               TextColor="{DynamicResource   SecondaryTextColor}" />
-                                    </StackLayout>
-                                    <StackLayout
-                                        Orientation="Horizontal">
-                                        <Image Source="location" HeightRequest="11" />
-                                        <Label Text="{Binding Where}"
-                                               FontSize="Micro"
-                                               TextColor="{DynamicResource   SecondaryTextColor}" />
-                                    </StackLayout>
-
-                                </StackLayout>
-                            </StackLayout>
-                            <Frame
-
-                                Padding="0,0,0,0"
-                                HasShadow="False"
-                                Grid.Row="0"
-                                Grid.Column="4">
-                                <userControl:FavoriteButton
-                                    Command="{Binding 
-                                                Source={RelativeSource 
-                                                AncestorType={x:Type talks:TalksViewModel}},
-                                                Path=SetFavoriteCommand}"
-                                    CommandParameter="{Binding 
-                                                Source={RelativeSource
-                                                AncestorType={x:Type talks:TalkModel}}}"
-                                    />
-                                    
-                          
-                            </Frame>
-                            <Button
-                                VerticalOptions="End"
-                                CornerRadius="4"
-                                FontSize="9"
-                                HeightRequest="17" Padding="9,0,9,0"
-                                BackgroundColor="{DynamicResource PrimaryColor}"
-                                TextColor="White"
-                                FontAttributes="Bold"
-                                Grid.Row="1"
-                                Grid.Column="3"
-                                Grid.ColumnSpan="2" Text="SESSION" />
-                        </Grid>
-
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-
         </CollectionView>
 
     </ContentPage.Content>

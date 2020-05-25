@@ -1,5 +1,4 @@
-﻿using System.Net.Http.Headers;
-using System.Text;
+﻿using System.Text;
 using System.Threading.Tasks;
 using ConfApp.About;
 using ConfApp.Loading;
