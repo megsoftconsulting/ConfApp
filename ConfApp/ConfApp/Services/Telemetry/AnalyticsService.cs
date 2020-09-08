@@ -1,20 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConfApp.Services.Telemetry.Events;
 using ConfApp.Services.Telemetry.Providers;
 
 namespace ConfApp.Services.Telemetry
 {
-    public class TelemetryService : ITelemetryService
+    public class AnalyticsService : IAnalyticsService
     {
         private readonly ILocationService _locationService;
 
-        private readonly List<ITelemetryProvider> _providers = new List<ITelemetryProvider>
+        private readonly List<IAnalyticsProvider> _providers = new List<IAnalyticsProvider>
         {
-            new AppCenterTelemetryProvider(),
-            new AppDynamicsTelemetryProvider()
+            new AppCenterAnalyticsProvider(),
+            new AppDynamicsAnalyticsProvider()
         };
 
-        public TelemetryService(ILocationService locationService)
+        public AnalyticsService(ILocationService locationService)
         {
             _locationService = locationService;
         }

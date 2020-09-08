@@ -22,19 +22,19 @@ namespace ConfApp.Login
         private readonly Lazy<HttpClient> _apiClient = new Lazy<HttpClient>(() => new HttpClient());
         private readonly IBrowser _browser;
         private readonly IPromptService _promptService;
-        private readonly ITelemetryService _telemetry;
+        private readonly IAnalyticsService _analytics;
         private OidcClient _authClient;
         private LoginResult _result;
 
         public LoginViewModel(
             INavigationService navigationService,
-            ITelemetryService telemetry,
+            IAnalyticsService analytics,
             IBrowser browser,
             IPromptService promptService)
             : base(
-                navigationService, telemetry)
+                navigationService, analytics)
         {
-            _telemetry = telemetry;
+            _analytics = analytics;
             _browser = browser;
             _promptService = promptService;
             SocialLoginCommand = new DelegateCommand<string>(OnSocialLogin);
@@ -67,14 +67,14 @@ namespace ConfApp.Login
 
         private async void OnNoLogin()
         {
-            _telemetry.TrackEvent(new DidNotSignInEvent());
+            _analytics.TrackEvent(new DidNotSignInEvent());
 
             var r = await NavigateToMainScreen();
 
             if (!r.Success)
             {
                 await _promptService.DisplayAlert("Error", "Error while trying to navigate to the main page.", "OK");
-                _telemetry.TrackError(r.Exception);
+                _analytics.TrackError(r.Exception);
                 Debug.WriteLine(r.Exception);
             }
         }
@@ -92,10 +92,10 @@ namespace ConfApp.Login
 
         private async void OnSocialLogin(string scheme)
         {
-            var r = await _authClient.LoginAsync();
+           // var r = await _authClient.LoginAsync();
             var e = new SignedInEvent(scheme);
-            _telemetry.TrackEvent(e);
-            _telemetry.SetCurrentUser("Claudio Sanchez", "claudio@megsoftconsulting.com");
+            _analytics.TrackEvent(e);
+            _analytics.SetCurrentUser("Claudio Sanchez", "claudio@megsoftconsulting.com");
             await NavigateToMainScreen();
         }
     }

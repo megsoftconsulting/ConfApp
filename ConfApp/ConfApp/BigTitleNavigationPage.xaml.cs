@@ -11,6 +11,7 @@ namespace ConfApp
 
         public BigTitleNavigationPage(Page root):base(root)
         {
+          
         }
     }
 }

@@ -14,8 +14,8 @@ namespace ConfApp.Speakers
 
         public SpeakerDetailViewModel(INavigationService navigationService,
             ISpeakerService speakerService,
-            ITelemetryService telemetryService) : base(
-            navigationService, telemetryService)
+            IAnalyticsService analyticsService) : base(
+            navigationService, analyticsService)
         {
             _speakerService = speakerService;
             CloseCommand = new DelegateCommand(async ()=> await NavigationService.GoBackAsync());

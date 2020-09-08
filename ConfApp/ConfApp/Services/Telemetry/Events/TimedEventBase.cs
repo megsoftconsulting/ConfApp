@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
 
-namespace ConfApp.Services.Telemetry
+namespace ConfApp.Services.Telemetry.Events
 {
     public class TimedEventBase : EventBase
     {

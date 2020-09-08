@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
 using ConfApp.Services.Telemetry;
+using ConfApp.Services.Telemetry.Events;
 using ConfApp.ViewModels;
 using Prism.Commands;
 using Prism.Navigation;
@@ -12,8 +13,8 @@ namespace ConfApp.Talks
         private ObservableCollection<TalkModel> _items = new ObservableCollection<TalkModel>();
 
         public TalksViewModel(INavigationService navigationService,
-            ITelemetryService telemetryService)
-            : base(navigationService, telemetryService)
+            IAnalyticsService analyticsService)
+            : base(navigationService, analyticsService)
         {
             Title = "Sessions";
             SelectedItemCommand = new DelegateCommand<TalkModel>(OnSelectedItem);
@@ -39,6 +40,9 @@ namespace ConfApp.Talks
 
         private void OnTalkFavorited(TalkModel talk)
         {
+            talk.IsFavorite = !talk.IsFavorite;
+            var @event = new UserFavoritesATalkEvent(talk.IsFavorite, talk.Title);
+            AnalyticsService.TrackEvent(@event);
         }
 
         private async void OnSelectedItem(TalkModel obj)

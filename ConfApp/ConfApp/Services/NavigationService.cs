@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using ConfApp.Services.Telemetry;
+using ConfApp.Services.Telemetry.Events;
 using Prism.Behaviors;
 using Prism.Common;
 using Prism.Ioc;
@@ -14,17 +15,17 @@ namespace ConfApp.Services
 {
     public class NavigationService : PageNavigationService
     {
-        private readonly ITelemetryService _telemetryService;
+        private readonly IAnalyticsService _analyticsService;
         private string _mostRecentPageTitle = string.Empty;
 
         public NavigationService(IContainerExtension container,
             IApplicationProvider applicationProvider,
             IPageBehaviorFactory pageBehaviorFactory,
             ILoggerFacade logger,
-            ITelemetryService telemetryService) : base(container, applicationProvider,
+            IAnalyticsService analyticsService) : base(container, applicationProvider,
             pageBehaviorFactory, logger)
         {
-            _telemetryService = telemetryService;
+            _analyticsService = analyticsService;
         }
 
         protected override async Task<INavigationResult> NavigateInternal(Uri uri, INavigationParameters parameters,
@@ -33,8 +34,16 @@ namespace ConfApp.Services
             var result = await base.NavigateInternal(uri, parameters, useModalNavigation, animated);
 
             if (result.Success)
-                _telemetryService.TrackEvent(new EventBase($"Navigated to {_mostRecentPageTitle}"));
-            Debug.WriteLine($"Navigated to {uri.OriginalString} - {_mostRecentPageTitle}");
+            {
+                _analyticsService.TrackEvent(new EventBase($"Navigated to {_mostRecentPageTitle}"));
+                Debug.WriteLine($"Navigated to {uri.OriginalString} - {_mostRecentPageTitle}");
+            }
+            else
+            {
+                _analyticsService.TrackError(result.Exception);
+                Debug.WriteLine($"Error while trying to navigate to {_mostRecentPageTitle}");
+            }
+
             return result;
         }
 

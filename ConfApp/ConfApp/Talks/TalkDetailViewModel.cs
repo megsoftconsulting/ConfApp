@@ -8,8 +8,8 @@ namespace ConfApp.Talks
     {
         public TalkDetailViewModel(
             INavigationService navigationService,
-            ITelemetryService telemetryService) :
-            base(navigationService, telemetryService)
+            IAnalyticsService analyticsService) :
+            base(navigationService, analyticsService)
         {
         }
     }

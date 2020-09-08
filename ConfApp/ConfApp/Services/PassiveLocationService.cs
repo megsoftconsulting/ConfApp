@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using Azure.Messaging.EventHubs;
@@ -23,6 +24,8 @@ namespace ConfApp.Services
             Task.Run(ProcessMessages).ConfigureAwait(false);
         }
 
+        public bool IsInitialized { get; private set; }
+
         public void SendAsync(HeartBeatMessage message)
         {
             _messages.Enqueue(message);
@@ -31,30 +34,37 @@ namespace ConfApp.Services
         private async void ProcessMessages()
         {
             const int maxPerBatch = 1000;
-            while (true)
-            {
+            while (true & IsInitialized)
                 // Create a batch of events 
-                var eventBatch = await _client.CreateBatchAsync();
-                var howMany = _messages.Count >= maxPerBatch ? maxPerBatch : _messages.Count;
-                for (var i = 0; i < howMany; i++)
+                try
                 {
-                    HeartBeatMessage msg;
-                    var success = _messages.TryDequeue(out msg);
-
-                    if (success)
+                    var eventBatch = await _client.CreateBatchAsync();
+                    var howMany = _messages.Count >= maxPerBatch ? maxPerBatch : _messages.Count;
+                    for (var i = 0; i < howMany; i++)
                     {
-                        var data = JsonConvert.SerializeObject(msg, Formatting.Indented);
-                        eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes(data)));
+                        HeartBeatMessage msg;
+                        var success = _messages.TryDequeue(out msg);
+
+                        if (success)
+                        {
+                            var data = JsonConvert.SerializeObject(msg, Formatting.Indented);
+                            eventBatch.TryAdd(new EventData(Encoding.UTF8.GetBytes(data)));
+                        }
+                    }
+
+                    if (eventBatch.Count > 0)
+                    {
+                        await _client.SendAsync(eventBatch);
+                        Console.WriteLine(
+                            $"Sent {eventBatch.Count} events - Batch Size:{eventBatch.SizeInBytes / 1024}KBs. {_messages.Count} messages in the Queue.");
                     }
                 }
-
-                if (eventBatch.Count > 0)
+                catch (Exception ex)
                 {
-                    await _client.SendAsync(eventBatch);
-                    Console.WriteLine(
-                        $"Sent {eventBatch.Count} events - Batch Size:{eventBatch.SizeInBytes / 1024}KBs. {_messages.Count} messages in the Queue.");
+                    // Most likely there was an issue sending data to Event Hub
+                    Debug.WriteLine(ex);
+                    IsInitialized = false;
                 }
-            }
         }
 
         private void ConfigureClient()
@@ -71,7 +81,16 @@ namespace ConfApp.Services
                     Mode = EventHubsRetryMode.Exponential
                 }
             };
-            _client = new EventHubProducerClient(ConnectionString, EventHubName, co);
+
+            try
+            {
+                _client = new EventHubProducerClient(ConnectionString, EventHubName, co);
+                IsInitialized = true;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex);
+            }
         }
     }
 }

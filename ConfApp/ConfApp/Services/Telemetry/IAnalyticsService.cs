@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using ConfApp.Services.Telemetry.Events;
 
 namespace ConfApp.Services.Telemetry
 {
-    public interface ITelemetryService
+    public interface IAnalyticsService
     {
         void TrackEvent(EventBase @event);
         void SetCurrentUser(string name, string id);

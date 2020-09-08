@@ -2,13 +2,14 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using ConfApp.Services.Telemetry.Events;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 
 namespace ConfApp.Services.Telemetry.Providers
 {
-    public class AppCenterTelemetryProvider : ITelemetryProvider
+    public class AppCenterAnalyticsProvider : IAnalyticsProvider
     {
         public void SetCurrentUser(string name, string id)
         {
@@ -20,7 +21,7 @@ namespace ConfApp.Services.Telemetry.Providers
             AppCenterTrack(@event);
         }
 
-        void ITelemetryProvider.TrackSuperProperty<TValue>(string name, TValue value)
+        void IAnalyticsProvider.TrackSuperProperty<TValue>(string name, TValue value)
         {
             AppCenterTrackSuperProperty(name, value);
         }
@@ -32,10 +33,9 @@ namespace ConfApp.Services.Telemetry.Providers
 
         public void ClearSuperProperty(string key)
         {
-
+            AppCenterClearSuperProperty(key);
         }
        
-
         private void AppCenterClearSuperProperty(string key)
         {
             var cp = new CustomProperties();

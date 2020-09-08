@@ -11,5 +11,6 @@ namespace ConfApp.Talks
         public string Where { get; set; }
         public string AvatarImage { get; set; }
         public string SessionType { get; set; }
+        public bool IsFavorite { get; set; }
     }
 }

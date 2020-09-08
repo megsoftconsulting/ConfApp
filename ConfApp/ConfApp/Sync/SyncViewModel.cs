@@ -7,8 +7,8 @@ namespace ConfApp.Sync
     public class SyncViewModel : ViewModelBase
     {
         public SyncViewModel(INavigationService navigationService, 
-            ITelemetryService telemetryService) : base(
-            navigationService, telemetryService)
+            IAnalyticsService analyticsService) : base(
+            navigationService, analyticsService)
         {
         }
     }

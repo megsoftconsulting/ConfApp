@@ -11,7 +11,7 @@ namespace ConfApp.UserControl
     public partial class FavoriteButton : ContentView, INotifyPropertyChanged
     {
         public static readonly BindableProperty IsSelectedProperty =
-            BindableProperty.Create(nameof(IsSelected), typeof(bool), typeof(FavoriteButton));
+            BindableProperty.Create(nameof(IsSelected), typeof(bool), typeof(FavoriteButton), false);
 
         public static readonly BindableProperty CommandParameterProperty =
             BindableProperty.Create(nameof(CommandParameter), typeof(object), typeof(FavoriteButton));
@@ -22,7 +22,6 @@ namespace ConfApp.UserControl
         public FavoriteButton()
         {
             InitializeComponent();
-            IsSelected = true;
         }
 
         public ICommand Command

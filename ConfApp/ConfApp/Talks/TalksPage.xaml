@@ -4,13 +4,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:ios="clr-namespace:Xamarin.Forms.PlatformConfiguration.iOSSpecific;assembly=Xamarin.Forms.Core"
              xmlns:talks="clr-namespace:ConfApp.Talks;assembly=ConfApp"
-             xmlns:userControl="clr-namespace:ConfApp.UserControl;assembly=ConfApp"
              x:Class="ConfApp.Talks.TalksPage"
              x:DataType="talks:TalksViewModel"
              ios:Page.UseSafeArea="True"
-             IconImageSource="SpeakersTabIcon_Enabled"
+             IconImageSource="Schedule"
              ios:Page.LargeTitleDisplay="Always"
              Title="{Binding Title}"
+             ios:Page.PrefersHomeIndicatorAutoHidden="True"
+             ios:NavigationPage.HideNavigationBarSeparator="True"
              BackgroundColor="{DynamicResource LayoutColor}">
     <ContentPage.Content>
 

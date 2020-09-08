@@ -30,9 +30,9 @@ namespace ConfApp.About
         public AboutViewModel(INavigationService navigationService,
             IEventHubProducer client,
             ILocationService locationService,
-            ITelemetryService telemetryService,
+            IAnalyticsService analyticsService,
             IGeofencingService geofenceService,
-            IScreenshotService screenshotService) : base(navigationService, telemetryService)
+            IScreenshotService screenshotService) : base(navigationService, analyticsService)
         {
             _client = client;
             _locationService = locationService;

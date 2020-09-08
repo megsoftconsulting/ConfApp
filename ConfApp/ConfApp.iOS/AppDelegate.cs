@@ -1,14 +1,17 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using WindowsAzure.Messaging;
 using ConfApp.iOS.Services;
 using ConfApp.Services.Telemetry;
+using ConfApp.Services.Telemetry.Events;
 using FFImageLoading.Forms.Platform;
 using Foundation;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
 using UIKit;
+using UserNotifications;
 using Xamarin;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
@@ -21,8 +24,17 @@ namespace ConfApp.iOS
     [Register("AppDelegate")]
     public class AppDelegate : FormsApplicationDelegate
     {
+        // Azure app-specific connection string and hub path
+        public const string ListenConnectionString =
+            "Endpoint=sb://confapp.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=qla3ELzJz9Y/FFi9XHReIHiIVA9rDzIpO8dSnkGmEcU=";
+
+        public const string NotificationHubName = "confapp";
+
+        private IAnalyticsService _analyticsService;
+
+        //private PushHandler _pushHandler;
         private iOSBackgroundTask _task;
-        private ITelemetryService _telemetryService;
+        private SBNotificationHub Hub { get; set; }
 
         //
         // This method is invoked when the application has loaded and is ready to run. In this 
@@ -33,20 +45,135 @@ namespace ConfApp.iOS
         //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
+            InitializeAzureNotificationHub();
+            // InitializeAirship();
             InitializeBeforeXamarinForms(app, options);
             ConfigureUnhandledErrorHandling(app, options);
             Forms.Init();
             InitializeControls(app, options);
             var application = new App(new iOSInitializer());
 
-            _telemetryService = application
+            _analyticsService = application
                 .Container
-                .Resolve(typeof(ITelemetryService)) as ITelemetryService;
+                .Resolve(typeof(IAnalyticsService)) as IAnalyticsService;
 
-            _telemetryService?.TrackEvent(new EventBase("Application Launched Successfully."));
+            _analyticsService?.TrackEvent(new EventBase("Application Launched Successfully."));
 
             LoadApplication(application);
             return base.FinishedLaunching(app, options);
+        }
+
+        private void InitializeAzureNotificationHub()
+        {
+            UNUserNotificationCenter
+                .Current
+                .RequestAuthorization(
+                    UNAuthorizationOptions.Alert |
+                    UNAuthorizationOptions.Badge |
+                    UNAuthorizationOptions.Sound,
+                    (granted, error) =>
+                        InvokeOnMainThread(UIApplication.SharedApplication.RegisterForRemoteNotifications));
+        }
+
+        //private void InitializeAirship()
+        //{
+        //    // Set log level for debugging config loading (optional)
+        //    // It will be set to the value in the loaded config upon takeOff
+        //    UAirship.SetLogLevel(UALogLevel.Trace);
+
+        //    // Populate AirshipConfig.plist with your app's info from https://go.urbanairship.com
+        //    // or set runtime properties here.
+        //    var config = UAConfig.DefaultConfig();
+        //    config.DefaultAppSecret = "M3YRh3aKTYaYkk_gRFilig";
+        //    config.DefaultAppKey = "YW1Rm20KQBm1baBu1ZlCKg";
+
+        //    config.ProductionAppKey = config.DefaultAppKey;
+        //    config.ProductionAppSecret = config.DefaultAppSecret;
+        //    config.RequestAuthorizationToUseNotifications = true;
+
+        //    if (!config.Validate())
+        //        throw new RuntimeException("The AirshipConfig.plist must be a part of the app bundle and " +
+        //                                   "include a valid appkey and secret for the selected production level.");
+
+        //    //WarnIfSimulator();
+
+        //    // Bootstrap the Airship SDK
+        //    UAirship.TakeOff(config);
+
+        //    Console.WriteLine("Config:{0}", config);
+
+        //    UAirship.Push().ResetBadge();
+        //    UAirship.Push().UserPushNotificationsEnabled = true;
+        //    UAirship.NamedUser().Identifier = "67004006";
+
+        //    _pushHandler = new PushHandler();
+        //    UAirship.Push().PushNotificationDelegate = _pushHandler;
+
+
+        //    UAirship.Push().WeakRegistrationDelegate = this;
+
+        //    //NSNotificationCenter.DefaultCenter.AddObserver(new NSString("channelIDUpdated"), notification =>
+        //    //{
+        //    //    //FIXME: Find a way to call the refreshView from the HomeViewController
+        //    //});
+        //}
+
+        //[Export("registrationSucceededForChannelID:deviceToken:")]
+        //public void RegistrationSucceeded(string channelID, string deviceToken)
+        //{
+        //    Console.Write($"RegistrationSucceeded channel ID:{channelID}, deviceToken: {deviceToken}");
+        //    UAirship.NamedUser().Identifier = "67004006";
+        //    // NSNotificationCenter.DefaultCenter.PostNotificationName("channelIDUpdated", this);
+        //}
+
+        ////[ProtocolMember(IsProperty = false, IsRequired = false, IsStatic = false, Name = "ApnsRegistrationSucceeded", ParameterByRef = new bool[] { false }, ParameterType = new Type[] { typeof() }, Selector = "apnsRegistrationSucceededWithDeviceToken:")]
+        ////[Export("apnsRegistrationSucceededWithDeviceToken:")]
+        //public void ApnsRegistrationSucceeded(NSData deviceToken)
+        //{
+        //}
+
+        //[Export("registrationFailed")]
+        //public void RegistrationFailed()
+        //{
+        //}
+
+        //[Export("apnsRegistrationFailedWithError:")]
+        //public void ApnsRegistrationFailed(NSError error)
+        //{
+        //}
+
+        public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
+        {
+            Console.WriteLine("RegisteredForRemoteNotifications Called");
+            Hub = new SBNotificationHub(ListenConnectionString, NotificationHubName);
+
+            Hub.UnregisterAll(deviceToken, error =>
+            {
+                if (error != null)
+                {
+                    Debug.WriteLine("Error calling Unregister: {0}", error.ToString());
+                    return;
+                }
+
+                var tags = new NSMutableSet {new NSString("claudio")}; // create tags if you want
+
+                Hub.RegisterNative(deviceToken, tags, errorCallback =>
+                {
+                    if (errorCallback != null)
+                        Debug.WriteLine("RegisterNativeAsync error: " + errorCallback);
+                });
+            });
+        }
+
+        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        {
+            //Console.WriteLine($"FailedToRegisterForRemoteNotifications {error}");
+        }
+
+        public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
+        {
+            Console.WriteLine("Received Remote Notification");
+            //base.ReceivedRemoteNotification(application, userInfo);
         }
 
         public override void DidEnterBackground(UIApplication uiApplication)
@@ -115,9 +242,8 @@ namespace ConfApp.iOS
         {
             //FormsGoogleMaps.Init("AIzaSyBBmi8wp1mAFCjlVP_XuaTpPNgmrWZLnhE");
             FormsMaps.Init();
-            FFImageLoading.Forms.Platform.CachedImageRenderer.Init();
+            CachedImageRenderer.Init();
             CachedImageRenderer.InitImageSourceHandler();
-            
         }
     }
 }

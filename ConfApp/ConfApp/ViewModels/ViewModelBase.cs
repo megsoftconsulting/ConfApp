@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using ConfApp.Services.Telemetry;
+using ConfApp.Services.Telemetry.Events;
 using Prism;
 using Prism.AppModel;
 using Prism.Mvvm;
@@ -10,43 +12,45 @@ namespace ConfApp.ViewModels
 {
     public class TabViewModelBase : ViewModelBase, IActiveAware
     {
-        private bool _isActive;
-        private bool _wasInitialized;
+        public bool IsInitialized { get; private set; }
 
-        public TabViewModelBase(INavigationService navigationService, ITelemetryService telemetryService) : base(
-            navigationService, telemetryService)
+        public TabViewModelBase(INavigationService navigationService, 
+            IAnalyticsService analyticsService) : base(
+            navigationService, analyticsService)
         {
             IsTabActiveChanged += OnIsTabActiveChanged;
+            PropertyChanged += OnPropertyChanged;
+            IsInitialized = false;
+
         }
 
-        public bool IsActive
-        {
-            get => _isActive;
-            set
-            {
-                SetProperty(ref _isActive, value);
-                OnChanged();
-            }
-        }
+        public bool IsActive { get; set; }
 
         public event EventHandler IsActiveChanged;
 
+        protected void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName != nameof(IsActive)) return;
+            IsActiveChanged?.Invoke(this, EventArgs.Empty);
+            IsTabActiveChanged?.Invoke(this, IsActive);
+        }
+
         /// <summary>
-        /// Make sure you call base.Initialize()S
+        ///     Make sure you call base.Initialize()S
         /// </summary>
         /// <param name="parameters"></param>
         public override void Initialize(INavigationParameters parameters)
         {
             base.Initialize(parameters);
-            _wasInitialized = true;
+            IsInitialized = true;
         }
 
         private void OnIsTabActiveChanged(object sender, bool e)
         {
             var status = IsActive ? "Active" : "Inactive";
-            Debug.WriteLine($"ViewModelBase - {Title} Tab Is {status}");
+            Debug.WriteLine($"ViewModelBase.OnIsTabActiveChanged()- {Title} Tab Is {status}");
 
-            if (!_wasInitialized) return;
+            if (!IsInitialized) return;
             if (IsActive) TrackTabIsActive();
         }
 
@@ -60,9 +64,17 @@ namespace ConfApp.ViewModels
 
         private void TrackTabIsActive()
         {
-            var message = $"Tab Is Active";
-            TelemetryService
+            var message = "Tab was made is Visible (Active)";
+            AnalyticsService
                 .TrackEvent(new EventBase(message).AddParameter("TabName", Title));
+        }
+
+        public override void Destroy()
+        {
+            IsTabActiveChanged -= OnIsTabActiveChanged;
+            PropertyChanged -= OnPropertyChanged;
+            base.Destroy();
+         
         }
     }
 
@@ -72,28 +84,23 @@ namespace ConfApp.ViewModels
         IPageLifecycleAware,
         IInitialize
     {
-        private string _title;
-
         public ViewModelBase(INavigationService navigationService,
-            ITelemetryService telemetryService)
+            IAnalyticsService analyticsService)
         {
-            TelemetryService = telemetryService;
+            AnalyticsService = analyticsService;
             NavigationService = navigationService;
         }
 
-        protected ITelemetryService TelemetryService { get; }
+        protected IAnalyticsService AnalyticsService { get; }
 
         protected INavigationService NavigationService { get; }
 
-        public string Title
-        {
-            get => _title;
-            set => SetProperty(ref _title, value);
-        }
+        public string Title { get; set; }
 
 
         public virtual void Destroy()
         {
+            Debug.WriteLine($"Detroying {Title} Page");
         }
 
         public virtual void Initialize(INavigationParameters parameters)

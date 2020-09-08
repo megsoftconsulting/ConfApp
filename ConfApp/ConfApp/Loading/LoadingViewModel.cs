@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using ConfApp.About;
 using ConfApp.Services;
 using ConfApp.Services.Telemetry;
+using ConfApp.Services.Telemetry.Events;
 using ConfApp.Speakers;
 using ConfApp.Sync;
 using ConfApp.Talks;
@@ -15,7 +16,7 @@ namespace ConfApp.Loading
 {
     public class LoadingViewModel : ViewModelBase
     {
-        private readonly ITelemetryService _telemetry;
+        private readonly IAnalyticsService _analytics;
         private readonly IDialogService _dialogService;
         private readonly IPromptService _promptService;
         private bool _loadingInProgress;
@@ -24,12 +25,12 @@ namespace ConfApp.Loading
 
         public LoadingViewModel(
             INavigationService navigationService,
-            ITelemetryService telemetry, 
+            IAnalyticsService analytics, 
             IDialogService dialogService,
             IPromptService promptService
-        ) : base(navigationService, telemetry)
+        ) : base(navigationService, analytics)
         {
-            _telemetry = telemetry;
+            _analytics = analytics;
             _dialogService = dialogService;
             _promptService = promptService;
             Title = "Loading Page";
@@ -55,7 +56,7 @@ namespace ConfApp.Loading
 
         public override async void OnNavigatedTo(INavigationParameters parameters)
         {
-            var @event = new TimedEventBase("Application Loaded Successfully");
+            var @event = new AppLoadedEvent();
             LoadingInProgress = true;
             await UpdateProgress();
             LoadingInProgress = false;
@@ -63,10 +64,10 @@ namespace ConfApp.Loading
             
             var r = await NavigationService.NavigateAsync("/LoginPage");
             if (r.Success)
-                _telemetry.TrackEvent(@event);
+                _analytics.TrackEvent(@event);
             else
             {
-                _telemetry.TrackError(r.Exception, null);
+                _analytics.TrackError(r.Exception, null);
                 await _promptService.DisplayAlert("Error", r.Exception.InnerException?.Message, "OK");
 
             }
@@ -98,12 +99,6 @@ namespace ConfApp.Loading
             sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(AboutPage)}");
             sb.Append($"&createTab={nameof(BigTitleNavigationPage)}|{nameof(SyncPage)}");
             return service.NavigateAsync(sb.ToString());
-        }
-    }
-    public class AppLoadedEvent : EventBase
-    {
-        public AppLoadedEvent() : base("Application Loaded Successfully")
-        {
         }
     }
 }

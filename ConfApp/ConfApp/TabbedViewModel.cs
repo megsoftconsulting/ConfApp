@@ -8,8 +8,8 @@ namespace ConfApp
     {
         public TabbedViewModel(
             INavigationService navigationService,
-            ITelemetryService telemetryService) :
-            base(navigationService, telemetryService)
+            IAnalyticsService analyticsService) :
+            base(navigationService, analyticsService)
         {
         }
     }

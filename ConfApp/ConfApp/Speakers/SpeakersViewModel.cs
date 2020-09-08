@@ -18,8 +18,8 @@ namespace ConfApp.Speakers
         public SpeakersViewModel(
             INavigationService navigationService,
             ISpeakerService speakerService,
-            ITelemetryService telemetryService)
-            : base(navigationService, telemetryService)
+            IAnalyticsService analyticsService)
+            : base(navigationService, analyticsService)
         {
             _speakerService = speakerService;
             Title = "Speakers";

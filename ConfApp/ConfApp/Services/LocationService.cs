@@ -27,7 +27,7 @@ namespace ConfApp.Services
             }
             catch (Exception ex)
             {
-                //TelemetryService.TrackError(ex);
+                //AnalyticsService.TrackError(ex);
                 Debug.WriteLine(ex);
             }
 
@@ -36,44 +36,53 @@ namespace ConfApp.Services
 
         public async Task<Location> GetCurrentLocationAsync()
         {
-            var grantedAlways = await Permissions.CheckStatusAsync<Permissions.LocationAlways>() ==
-                                PermissionStatus.Granted;
-            var grantedWHenInUse = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>() ==
-                                   PermissionStatus.Granted;
-
-            if (!grantedWHenInUse && !grantedAlways) return null;
-
-            var request = new GeolocationRequest(
-                GeolocationAccuracy.Best,
-                TimeSpan.FromMilliseconds(_millisecondsToWaitForALocation)
-            );
             try
             {
+                var grantedAlways = await Permissions.CheckStatusAsync<Permissions.LocationAlways>() ==
+                                    PermissionStatus.Granted;
+                var grantedWHenInUse = await Permissions.CheckStatusAsync<Permissions.LocationWhenInUse>() ==
+                                       PermissionStatus.Granted;
+
+                if (!grantedWHenInUse && !grantedAlways) return null;
+
+                var request = new GeolocationRequest(
+                    GeolocationAccuracy.Best,
+                    TimeSpan.FromMilliseconds(_millisecondsToWaitForALocation)
+                );
+
                 var location = await Geolocation.GetLocationAsync(request);
 
                 if (location != null)
                     return location;
             }
+
             catch (FeatureNotSupportedException fnsEx)
             {
                 // Handle not supported on device exception
-                //TelemetryService.TrackError(fnsEx);
+                //AnalyticsService.TrackError(fnsEx);
             }
             catch (FeatureNotEnabledException fneEx)
             {
                 // Handle not enabled on device exception
-                // TelemetryService.TrackError(fneEx);
+                // AnalyticsService.TrackError(fneEx);
             }
             catch (PermissionException pEx)
             {
                 // Handle permission exception
-                // TelemetryService.TrackError(pEx);
+                // AnalyticsService.TrackError(pEx);
+
+            }
+            catch (NullReferenceException nre)
+            {
+                Debug.WriteLine(nre);
             }
             catch (Exception ex)
             {
                 // Unable to get location
-                //TelemetryService.TrackError(ex);
+                //AnalyticsService.TrackError(ex);
+                Debug.WriteLine(ex);
             }
+            
 
             return null;
         }

@@ -74,7 +74,7 @@ namespace ConfApp
             c.RegisterSingleton<ILocationService, LocationService>();
             c.RegisterSingleton<IEventHubProducer, PassiveLocationService>();
             c.RegisterSingleton<ISpeakerService, SpeakerService>();
-            c.RegisterSingleton<ITelemetryService, TelemetryService>();
+            c.RegisterSingleton<IAnalyticsService, AnalyticsService>();
             c.Register<IPromptService, PromptService>();
         }
 
