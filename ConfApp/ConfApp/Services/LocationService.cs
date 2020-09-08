@@ -23,7 +23,7 @@ namespace ConfApp.Services
             try
             {
                 status = await Permissions
-                    .RequestAsync<Permissions.LocationAlways>();
+                    .RequestAsync<Permissions.LocationWhenInUse>();
             }
             catch (Exception ex)
             {

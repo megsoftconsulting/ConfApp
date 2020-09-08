@@ -15,6 +15,7 @@ using UserNotifications;
 using Xamarin;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
+using ObjCRuntime;
 
 namespace ConfApp.iOS
 {
@@ -144,36 +145,36 @@ namespace ConfApp.iOS
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
         {
-            Console.WriteLine("RegisteredForRemoteNotifications Called");
-            Hub = new SBNotificationHub(ListenConnectionString, NotificationHubName);
-
-            Hub.UnregisterAll(deviceToken, error =>
-            {
-                if (error != null)
-                {
-                    Debug.WriteLine("Error calling Unregister: {0}", error.ToString());
-                    return;
-                }
-
-                var tags = new NSMutableSet {new NSString("claudio")}; // create tags if you want
-
-                Hub.RegisterNative(deviceToken, tags, errorCallback =>
-                {
-                    if (errorCallback != null)
-                        Debug.WriteLine("RegisterNativeAsync error: " + errorCallback);
-                });
-            });
+            Debug.WriteLine("RegisteredForRemoteNotifications Called");
+            AzurePushNotificationsHelper.RegisterForApplePushNotifications(deviceToken, new string[] { "claudio" });
         }
 
         public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
         {
-            //Console.WriteLine($"FailedToRegisterForRemoteNotifications {error}");
+            System.Diagnostics.Debug.WriteLine($"FailedToRegisterForRemoteNotifications {error}");
         }
 
-        public override void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
+        [Export("application:didRegisterUserNotificationSettings:")]
+        public void DidRegisterUserNotificationSettings(UIApplication application, UIUserNotificationSettings notificationSettings)
         {
-            Console.WriteLine("Received Remote Notification");
-            //base.ReceivedRemoteNotification(application, userInfo);
+            System.Diagnostics.Debug.WriteLine("DidRegisterUserNotificationSettings called");
+        }
+
+        [Export("application:didReceiveLocalNotification:")]
+        public void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
+        {
+            System.Diagnostics.Debug.WriteLine("ReceivedLocalNotification called");
+        }
+
+        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo,Action<UIBackgroundFetchResult> completionHandler)
+        {
+            Process(userInfo, false);
+            completionHandler(UIBackgroundFetchResult.NoData);
+        }
+
+        public void Process(NSDictionary options, bool fromFinishedLaunching)
+        {
+            System.Diagnostics.Debug.WriteLine("Processing Push Notification data");
         }
 
         public override void DidEnterBackground(UIApplication uiApplication)
