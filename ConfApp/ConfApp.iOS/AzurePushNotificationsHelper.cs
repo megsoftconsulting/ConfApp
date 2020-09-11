@@ -1,52 +1,50 @@
 ﻿using System.Diagnostics;
-using Foundation;
+using System.Threading.Tasks;
 using WindowsAzure.Messaging;
+using Foundation;
+
 namespace ConfApp.iOS
 {
     public static class AzurePushNotificationsHelper
     {
-
         // Azure app-specific connection string and hub path
         public const string ListenConnectionString =
             "Endpoint=sb://confapp.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=qla3ELzJz9Y/FFi9XHReIHiIVA9rDzIpO8dSnkGmEcU=";
 
         public const string NotificationHubName = "confapp";
-
-        private static SBNotificationHub Hub { get; set; }
-        private static NSData DeviceToken;
+        private static NSData _deviceToken;
 
         static AzurePushNotificationsHelper()
         {
             Hub = new SBNotificationHub(ListenConnectionString, NotificationHubName);
         }
 
-        public static async System.Threading.Tasks.Task RegisterTags(string[] tags)
+        private static SBNotificationHub Hub { get; }
+
+        public static async Task RegisterTags(string[] tags)
         {
-            await Hub.RegisterNativeAsync(DeviceToken, new NSSet(tags));
+            await Hub.RegisterNativeAsync(_deviceToken, new NSSet(tags));
         }
 
-        public static void RegisterForApplePushNotifications(NSData deviceToken, string[] tags)
+        public static void RegisterForApplePushNotifications(NSData deviceToken)
         {
-            DeviceToken = deviceToken;
-
+            _deviceToken = deviceToken;
+           
             Hub.UnregisterAll(deviceToken, error =>
             {
+                // ReSharper disable once ConditionIsAlwaysTrueOrFalse
                 if (error != null)
                 {
                     Debug.WriteLine("Error calling Unregister: {0}", error.ToString());
                     return;
                 }
 
-                Hub.RegisterNative(deviceToken, new NSSet(tags), errorCallback =>
+                Hub.RegisterNative(deviceToken, null, errorCallback =>
                 {
                     if (errorCallback != null)
                         Debug.WriteLine("RegisterNativeAsync error: " + errorCallback);
                 });
             });
         }
-
-
-
-
     }
 }

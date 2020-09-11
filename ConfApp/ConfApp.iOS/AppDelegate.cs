@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
-using WindowsAzure.Messaging;
 using ConfApp.iOS.Services;
 using ConfApp.Services.Telemetry;
 using ConfApp.Services.Telemetry.Events;
@@ -10,12 +8,13 @@ using Foundation;
 using Microsoft.AppCenter;
 using Microsoft.AppCenter.Analytics;
 using Microsoft.AppCenter.Crashes;
+using ObjCRuntime;
 using UIKit;
+using UrbanAirship;
 using UserNotifications;
 using Xamarin;
 using Xamarin.Forms;
 using Xamarin.Forms.Platform.iOS;
-using ObjCRuntime;
 
 namespace ConfApp.iOS
 {
@@ -23,35 +22,21 @@ namespace ConfApp.iOS
     // User Interface of the application, as well as listening (and optionally responding) to 
     // application events from iOS.
     [Register("AppDelegate")]
-    public class AppDelegate : FormsApplicationDelegate
+    public class AppDelegate : FormsApplicationDelegate, IUARegistrationDelegate
     {
-        // Azure app-specific connection string and hub path
-        public const string ListenConnectionString =
-            "Endpoint=sb://confapp.servicebus.windows.net/;SharedAccessKeyName=DefaultListenSharedAccessSignature;SharedAccessKey=qla3ELzJz9Y/FFi9XHReIHiIVA9rDzIpO8dSnkGmEcU=";
-
-        public const string NotificationHubName = "confapp";
-
         private IAnalyticsService _analyticsService;
-
-        //private PushHandler _pushHandler;
         private iOSBackgroundTask _task;
-        private SBNotificationHub Hub { get; set; }
+        private PushHandler PushHandler { get; set; }
 
-        //
-        // This method is invoked when the application has loaded and is ready to run. In this 
-        // method you should instantiate the window, load the UI into it and then make the window
-        // visible.
-        //
-        // You have 17 seconds to return from this method, or iOS will terminate your application.
-        //
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
-            InitializeAzureNotificationHub();
-            // InitializeAirship();
-            InitializeBeforeXamarinForms(app, options);
             ConfigureUnhandledErrorHandling(app, options);
             Forms.Init();
+            InitializeAzureNotificationHub();
+            InitializeAirship();
+            InitializeAppCenter(app, options);
             InitializeControls(app, options);
+
             var application = new App(new iOSInitializer());
 
             _analyticsService = application
@@ -76,121 +61,138 @@ namespace ConfApp.iOS
                         InvokeOnMainThread(UIApplication.SharedApplication.RegisterForRemoteNotifications));
         }
 
-        //private void InitializeAirship()
-        //{
-        //    // Set log level for debugging config loading (optional)
-        //    // It will be set to the value in the loaded config upon takeOff
-        //    UAirship.SetLogLevel(UALogLevel.Trace);
+        private void InitializeAirship()
+        {
+            // Set log level for debugging config loading (optional)
+            // It will be set to the value in the loaded config upon takeOff
+            UAirship.SetLogLevel(UALogLevel.Error);
 
-        //    // Populate AirshipConfig.plist with your app's info from https://go.urbanairship.com
-        //    // or set runtime properties here.
-        //    var config = UAConfig.DefaultConfig();
-        //    config.DefaultAppSecret = "M3YRh3aKTYaYkk_gRFilig";
-        //    config.DefaultAppKey = "YW1Rm20KQBm1baBu1ZlCKg";
+            // Populate AirshipConfig.plist with your app's info from https://go.urbanairship.com
+            // or set runtime properties here.
+            var config = UAConfig.Config();
+            // ConfApp Development
+            config.DevelopmentAppKey = "sXNOJQIMSnuIi6lkARClIA";
+            config.DevelopmentAppSecret = "9X09Cc0ESxiZbAqZE98glA";
+            // config.DetectProvisioningMode = true;
+            config.RequestAuthorizationToUseNotifications = true;
+            config.ClearNamedUserOnAppRestore = true;
+            config.DevelopmentLogLevel = UALogLevel.Error;
+            // SalesHub2 QA Live
+            //config.DefaultAppSecret = "M3YRh3aKTYaYkk_gRFilig";
+            //config.DefaultAppKey = "YW1Rm20KQBm1baBu1ZlCKg";
 
-        //    config.ProductionAppKey = config.DefaultAppKey;
-        //    config.ProductionAppSecret = config.DefaultAppSecret;
-        //    config.RequestAuthorizationToUseNotifications = true;
+            if (!config.Validate())
+                throw new RuntimeException("The AirshipConfig.plist must be a part of the app bundle and " +
+                                           "include a valid appkey and secret for the selected production level.");
 
-        //    if (!config.Validate())
-        //        throw new RuntimeException("The AirshipConfig.plist must be a part of the app bundle and " +
-        //                                   "include a valid appkey and secret for the selected production level.");
+            //WarnIfSimulator();
 
-        //    //WarnIfSimulator();
+            // Bootstrap the Airship SDK
+            UAirship.TakeOff(config);
 
-        //    // Bootstrap the Airship SDK
-        //    UAirship.TakeOff(config);
+            //Console.WriteLine("Config:{0}", config);
 
-        //    Console.WriteLine("Config:{0}", config);
-
-        //    UAirship.Push().ResetBadge();
-        //    UAirship.Push().UserPushNotificationsEnabled = true;
-        //    UAirship.NamedUser().Identifier = "67004006";
-
-        //    _pushHandler = new PushHandler();
-        //    UAirship.Push().PushNotificationDelegate = _pushHandler;
+            UAirship.NamedUser().Identifier = "67004006";
+            //UAirship.NamedUser().AddTags(new string[] { "non-prod" }, "test_group");
+            //UAirship.NamedUser().ForceUpdate();
+            Console.WriteLine($"NamedUser: {UAirship.NamedUser().Identifier}");
+            Console.WriteLine($"Channel ID: {UAirship.Channel().Identifier}");
 
 
-        //    UAirship.Push().WeakRegistrationDelegate = this;
+            PushHandler = new PushHandler();
+            UAirship.Push().PushNotificationDelegate = PushHandler;
+            UAirship.Push().ResetBadge();
+            UAirship.Push().WeakRegistrationDelegate = this;
+        }
 
-        //    //NSNotificationCenter.DefaultCenter.AddObserver(new NSString("channelIDUpdated"), notification =>
-        //    //{
-        //    //    //FIXME: Find a way to call the refreshView from the HomeViewController
-        //    //});
-        //}
 
-        //[Export("registrationSucceededForChannelID:deviceToken:")]
-        //public void RegistrationSucceeded(string channelID, string deviceToken)
-        //{
-        //    Console.Write($"RegistrationSucceeded channel ID:{channelID}, deviceToken: {deviceToken}");
-        //    UAirship.NamedUser().Identifier = "67004006";
-        //    // NSNotificationCenter.DefaultCenter.PostNotificationName("channelIDUpdated", this);
-        //}
-
-        ////[ProtocolMember(IsProperty = false, IsRequired = false, IsStatic = false, Name = "ApnsRegistrationSucceeded", ParameterByRef = new bool[] { false }, ParameterType = new Type[] { typeof() }, Selector = "apnsRegistrationSucceededWithDeviceToken:")]
-        ////[Export("apnsRegistrationSucceededWithDeviceToken:")]
-        //public void ApnsRegistrationSucceeded(NSData deviceToken)
-        //{
-        //}
-
-        //[Export("registrationFailed")]
-        //public void RegistrationFailed()
-        //{
-        //}
-
-        //[Export("apnsRegistrationFailedWithError:")]
-        //public void ApnsRegistrationFailed(NSError error)
-        //{
-        //}
+        [Export("registrationSucceededForChannelID:deviceToken:")]
+        public void RegistrationSucceeded(string channelId, string deviceToken)
+        {
+            AzurePushNotificationsHelper.RegisterForApplePushNotifications(NSData.FromString(deviceToken));
+        }
 
         public override void RegisteredForRemoteNotifications(UIApplication application, NSData deviceToken)
         {
-            Debug.WriteLine("RegisteredForRemoteNotifications Called");
-            AzurePushNotificationsHelper.RegisterForApplePushNotifications(deviceToken, new string[] { "claudio" });
-        }
-
-        public override void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
-        {
-            System.Diagnostics.Debug.WriteLine($"FailedToRegisterForRemoteNotifications {error}");
-        }
-
-        [Export("application:didRegisterUserNotificationSettings:")]
-        public void DidRegisterUserNotificationSettings(UIApplication application, UIUserNotificationSettings notificationSettings)
-        {
-            System.Diagnostics.Debug.WriteLine("DidRegisterUserNotificationSettings called");
+            Console.WriteLine("RegisteredForRemoteNotifications Called");
+            // Called Azure Notification Hub Register Native
         }
 
         [Export("application:didReceiveLocalNotification:")]
-        public void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
+        public override void ReceivedLocalNotification(UIApplication application, UILocalNotification notification)
         {
-            System.Diagnostics.Debug.WriteLine("ReceivedLocalNotification called");
+            Console.WriteLine("AppDelegate.ReceivedLocalNotification");
         }
 
-        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo,Action<UIBackgroundFetchResult> completionHandler)
+        [Export("application:didRegisterForRemoteNotificationsWithDeviceToken:")]
+        public override void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo,
+            Action<UIBackgroundFetchResult> completionHandler)
         {
-            Process(userInfo, false);
+            Console.WriteLine("AppDelegate.DidReceiveRemoteNotification");
+            //ProcessNotification(userInfo, false);
             completionHandler(UIBackgroundFetchResult.NoData);
         }
 
-        public void Process(NSDictionary options, bool fromFinishedLaunching)
+        private void ProcessNotification(NSDictionary options, bool fromFinishedLaunching)
         {
-            System.Diagnostics.Debug.WriteLine("Processing Push Notification data");
+            if (null != options && options.ContainsKey(new NSString("aps")))
+                ProcessForDemo(options, fromFinishedLaunching);
+
+            if (options != null && options.ContainsKey(new NSString("message-type")))
+                ProcessComplex(options, fromFinishedLaunching);
         }
 
-        public override void DidEnterBackground(UIApplication uiApplication)
+        private void ProcessComplex(NSDictionary options, bool fromFinishedLaunching)
         {
-            //var id = UIApplication.SharedApplication.BeginBackgroundTask("DummyTask",
-            //    () => { Debug.Write("DummyTask time is ending. ExpirationHandler being called by the OS."); });
-            //UIApplication.SharedApplication.EndBackgroundTask(id);
-            //base.DidEnterBackground(uiApplication);
+            if (options != null && options.ContainsKey(new NSString("message-type")))
+            {
+                var type = options.ObjectForKey(new NSString("message-type"));
+                var data = options["message-data"];
+            }
         }
 
-        public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication,
-            NSObject annotation)
+        private void ProcessForDemo(NSDictionary options, bool fromFinishedLaunching)
         {
-            // return base.OpenUrl(application, url, sourceApplication, annotation);
-            Debug.WriteLine("Opened URL was called");
-            return true;
+            if (null != options && options.ContainsKey(new NSString("aps")))
+            {
+                //Get the aps dictionary
+                var aps = options.ObjectForKey(new NSString("aps")) as NSDictionary;
+
+                var alert = string.Empty;
+
+                //Extract the alert text
+                // NOTE: If you're using the simple alert by just specifying
+                // "  aps:{alert:"alert msg here"}  ", this will work fine.
+                // But if you're using a complex alert with Localization keys, etc.,
+                // your "alert" object from the aps dictionary will be another NSDictionary.
+                // Basically the JSON gets dumped right into a NSDictionary,
+                // so keep that in mind.
+                //
+                try
+                {
+                    if (aps.ContainsKey(new NSString("alert")))
+                        alert = (aps["alert"] as NSString).ToString();
+
+                    //If this came from the ReceivedRemoteNotification while the app was running,
+                    // we of course need to manually process things like the sound, badge, and alert.
+                    if (!fromFinishedLaunching)
+                        //Manually show an alert
+                        if (!string.IsNullOrEmpty(alert))
+                            ShowAlertDialog(alert);
+                }
+                catch (Exception)
+                {
+                }
+            }
+        }
+
+        private static void ShowAlertDialog(string alert)
+        {
+            var myAlert = UIAlertController.Create("Message Received", alert, UIAlertControllerStyle.Alert);
+            myAlert.AddAction(UIAlertAction.Create("OK", UIAlertActionStyle.Destructive, null));
+            UIApplication.SharedApplication?.KeyWindow?.RootViewController?.PresentViewController(
+                myAlert,
+                true, null);
         }
 
         private async void StartBackgroundTasks()
@@ -211,7 +213,7 @@ namespace ConfApp.iOS
             //await task.Start();
         }
 
-        private void InitializeBeforeXamarinForms(UIApplication app, NSDictionary options)
+        private void InitializeAppCenter(UIApplication app, NSDictionary options)
         {
             AppCenter.Start("b99fa140-bd1f-4068-a3b7-4674fd6db65b",
                 typeof(Analytics), typeof(Crashes));
@@ -222,7 +224,7 @@ namespace ConfApp.iOS
             // Send it to Blog
             // EventHubs
 
-            AppCenterLog.Verbose("LifeCycle", "InitializeBeforeXamarinForms");
+            AppCenterLog.Verbose("LifeCycle", "InitializeAppCenter");
         }
 
         private void ConfigureUnhandledErrorHandling(UIApplication app, NSDictionary options)
